@@ -1,7 +1,10 @@
 import axios, { AxiosError } from "axios";
 // import { toast } from "sonner";
 
-export const BASE_URL = import.meta.env.VITE_APP_BACKEND_URL;
+export const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+export const IMAGE_URL = import.meta.env.VITE_IMAGE_URL;
+export const AuthorizationToken = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
+
 const https = axios.create({
 	baseURL: BASE_URL,
 	responseType: "json",
@@ -10,6 +13,7 @@ const https = axios.create({
 function getHeaders(isMultipart = false) {
 	return {
 		"Content-Type": isMultipart ? "multipart/form-data" : "application/json",
+		Authorization: `Bearer ${AuthorizationToken}`,
 	};
 }
 

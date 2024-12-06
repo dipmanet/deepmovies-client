@@ -1,3 +1,89 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap&family=Ruslan+Display&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	:root {
+		--background: #ffffff;
+		--foreground: #101828;
+
+		--card: #ffffff;
+		--card-foreground: #020817;
+
+		--popover: #ffffff;
+		--popover-foreground: #020817;
+
+		--primary: #ffffff;
+		--primary-foreground: #101828;
+
+		--secondary: #101828;
+		--secondary-foreground: #f2f4f7;
+
+		--circle: #9e77ed;
+		--circle-foreground: #ffffff;
+
+		--muted: #f9fafb;
+		--muted-foreground: #101828;
+
+		--accent: #7f56d9;
+		--accent-foreground: #ffffff;
+
+		--destructive: #f04438;
+		--destructive-foreground: #f8fafc;
+
+		--success: #ecfdf3;
+		--success-foreground: #027a48;
+
+		--failure: #fef3f2;
+		--failure-foreground: #b42318;
+
+		--warning: #fffaeb;
+		--warning-foreground: #b54708;
+
+		--border: #344054;
+		--input: #e2e8f0;
+		--ring: #020817;
+
+		--radius: 8px;
+	}
+
+	.dark {
+		--background: black;
+		--foreground: white;
+
+		--card: black;
+		--card-foreground: white;
+
+		--popover: black;
+		--popover-foreground: white;
+
+		--primary: white;
+		--primary-foreground: black;
+
+		--secondary: black;
+		--secondary-foreground: white;
+
+		--muted: black;
+		--muted-foreground: white;
+
+		--accent: black;
+		--accent-foreground: white;
+
+		--destructive: black;
+		--destructive-foreground: white;
+
+		--border: black;
+		--ring: white;
+	}
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background text-foreground font-roboto !p-0 !m-0;
+	}
+}
+
+.container {
+	@apply w-full md:w-[95vw] lg:w-[90vw] px-5 md:px-0 mx-auto;
+}
