@@ -18,7 +18,6 @@ export const getHoursTime = ({ hours = 0, minutes = 0, seconds = 0 }: TimeProps)
 	const hr = Math.floor(totalSec / 3600);
 	const min = Math.floor((totalSec - hr * 3600) / 60);
 	const sec = totalSec % 60;
-	console.log("test time", totalSec, hr, min, sec);
 	return `${hr > 0 ? (hr === 1 ? hr + " hr " : hr + " hrs ") : ""}${
 		min > 0 ? (min === 1 ? min + " min " : min + " mins ") : ""
 	}${sec > 0 ? (sec === 1 ? sec + " sec " : sec + " secs ") : ""}`;

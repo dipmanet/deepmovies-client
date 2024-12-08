@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 @layer base {
-	:root {
+	/* :root {
 		--background: #ffffff;
 		--foreground: #101828;
 
@@ -46,44 +46,45 @@
 		--ring: #020817;
 
 		--radius: 8px;
-	}
+	} */
 
-	.dark {
-		--background: black;
-		--foreground: white;
+	/* .dark { */
+	:root {
+		--background: #080808;
+		--foreground: gray;
 
-		--card: black;
-		--card-foreground: white;
+		--card: #151515;
+		--card-foreground: gray;
 
 		--popover: black;
-		--popover-foreground: white;
+		--popover-foreground: gray;
 
-		--primary: white;
-		--primary-foreground: black;
+		--primary: #ff055f;
+		--primary-foreground: gray;
 
-		--secondary: black;
-		--secondary-foreground: white;
+		--secondary: teal;
+		--secondary-foreground: gray;
 
-		--muted: black;
+		--muted: gray;
 		--muted-foreground: white;
 
 		--accent: black;
-		--accent-foreground: white;
+		--accent-foreground: gray;
 
-		--destructive: black;
-		--destructive-foreground: white;
+		--destructive: transparent;
+		--destructive-foreground: gray;
 
 		--border: black;
-		--ring: white;
+		--ring: gray;
 	}
 	* {
 		@apply border-border;
 	}
 	body {
-		@apply bg-background text-foreground font-roboto !p-0 !m-0;
+		@apply bg-background text-foreground font-main !p-0 !m-0;
 	}
 }
 
 .container {
-	@apply w-full md:w-[95vw] lg:w-[90vw] px-5 md:px-0 mx-auto;
+	@apply w-full md:w-[95vw] lg:w-[85vw] px-5 md:px-0 mx-auto;
 }

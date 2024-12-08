@@ -2,37 +2,42 @@ import { useQuery } from "@tanstack/react-query";
 import requests from "src/lib/requests";
 import { queries } from "./queries";
 
-// All lists
-export const useFetchNowPlaying = ({ page = 1 }) =>
+//All Categories
+export const useFetchMovieGenres = () =>
 	useQuery({
-		queryKey: [queries.fetch_now_playing],
-		queryFn: () => requests.get("/3/movie/now_playing", { page }),
+		queryKey: [queries.fetch_movie_genres],
+		queryFn: () => requests.get("/3/genre/movie/list"),
 	});
-export const useFetchTrendingMovies = ({ page = 1 }) =>
+export const useFetchTVGenres = () =>
 	useQuery({
-		queryKey: [queries.fetch_trending_movies],
-		queryFn: () => requests.get("/3/movie/popular", { page }),
-	});
-export const useFetchTopRatedMovies = ({ page = 1 }) =>
-	useQuery({
-		queryKey: [queries.fetch_top_rated_movies],
-		queryFn: () => requests.get("/3/movie/top_rated", { page }),
-	});
-export const useFetchUpcomingMovies = ({ page = 1 }) =>
-	useQuery({
-		queryKey: [queries.fetch_upcoming_movies],
-		queryFn: () => requests.get("/3/movie/upcoming", { page }),
+		queryKey: [queries.fetch_tv_genres],
+		queryFn: () => requests.get("/3/genre/tv/list"),
 	});
 
-//All Categories
-export const useFetchGenres = () =>
+// All lists
+export const useFetchNowPlayingMovies = (params?: object) =>
 	useQuery({
-		queryKey: [queries.fetch_genres],
-		queryFn: () => requests.get("/3/genre/movie/list"),
+		queryKey: [queries.fetch_now_playing],
+		queryFn: () => requests.get("/3/movie/now_playing", { ...params }),
+	});
+export const useFetchTrendingMovies = (params?: object) =>
+	useQuery({
+		queryKey: [queries.fetch_trending_movies],
+		queryFn: () => requests.get("/3/movie/popular", { ...params }),
+	});
+export const useFetchTopRatedMovies = (params?: object) =>
+	useQuery({
+		queryKey: [queries.fetch_top_rated_movies],
+		queryFn: () => requests.get("/3/movie/top_rated", { ...params }),
+	});
+export const useFetchUpcomingMovies = (params?: object) =>
+	useQuery({
+		queryKey: [queries.fetch_upcoming_movies],
+		queryFn: () => requests.get("/3/movie/upcoming", { ...params }),
 	});
 
 //Single Movie
-export const useFetchMovieDetails = ({ id }: { id: number }) =>
+export const useFetchMovieDetails = ({ id }: { id?: number }) =>
 	useQuery({
 		queryKey: [queries.fetch_movie, id],
 		queryFn: () => requests.get(`/3/movie/${id}`),

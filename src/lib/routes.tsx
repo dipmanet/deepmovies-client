@@ -1,5 +1,8 @@
 import React from "react";
-
-export const BaseLayout = React.lazy(() => import("#components/Layouts/BaseLayout"));
-export const Homepage = React.lazy(() => import("#pages/Homepage"));
+//components
 export const ErrorBoundary = React.lazy(() => import("#components/ErrorBoundary"));
+export const BaseLayout = React.lazy(() => import("#components/Layouts/BaseLayout"));
+
+//pages
+export const HomePage = React.lazy(() => import("#pages/Home"));
+export const MoviePage = React.lazy(() => import("#pages/Movie"));

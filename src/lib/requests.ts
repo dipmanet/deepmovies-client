@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 
 export const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 export const IMAGE_URL = import.meta.env.VITE_IMAGE_URL;
+export const VIDEO_URL = import.meta.env.VITE_VIDEO_URL;
 export const AuthorizationToken = import.meta.env.VITE_TMDB_ACCESS_TOKEN;
 
 const https = axios.create({

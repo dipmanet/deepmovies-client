@@ -3,6 +3,9 @@ export default {
 	content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
 	theme: {
 		extend: {
+			screens: {
+				"3xl": "1440px",
+			},
 			colors: {
 				border: "var(--border)",
 				input: "var(--input)",
@@ -55,9 +58,9 @@ export default {
 				},
 			},
 			fontFamily: {
-				roboto: ["Roboto", "sans-serif"],
-				poppins: ["Poppins", "sans-serif"],
-				ruslan: ["Ruslan Display", "sans-serif"],
+				text: ["Poppins", "sans-serif"],
+				main: ["Roboto", "sans-serif"],
+				heading: ["Ruslan Display", "sans-serif"],
 			},
 		},
 	},

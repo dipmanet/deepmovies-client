@@ -1,6 +1,6 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import { BaseLayout, ErrorBoundary, Homepage } from "./routes";
+import { BaseLayout, ErrorBoundary, HomePage, MoviePage } from "./routes";
 
 export const router = createBrowserRouter(
 	[
@@ -12,7 +12,15 @@ export const router = createBrowserRouter(
 			path: "/",
 			element: (
 				<BaseLayout>
-					<Homepage />
+					<HomePage />
+				</BaseLayout>
+			),
+		},
+		{
+			path: "/movie/:id",
+			element: (
+				<BaseLayout>
+					<MoviePage />
 				</BaseLayout>
 			),
 		},
