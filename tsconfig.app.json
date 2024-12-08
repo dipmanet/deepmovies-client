@@ -31,5 +31,5 @@
 			"#constants/*": ["src/constants/*"]
 		}
 	},
-	"include": ["src"]
+	"include": ["src", "src/components/Cards/MovieCards/CoverMovieCard2.tsx"]
 }
