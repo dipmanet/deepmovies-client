@@ -32,70 +32,73 @@ const CoverPoster = () => {
 
 	console.log("test data", Movies);
 	return (
-		<div className="w-full h-screen min-h-[400px] sm:min-h-[786px] overflow-hidden  relative ">
-			<div className="absolute top-0 right-0 h-full w-full md:w-[70%] flex md:justify-end">
-				<div className="h-full w-full relative">
-					<img
-						src={getImageUrl(backdrop_path)}
-						alt="poster"
-						className="w-full h-full object-cover"
-					/>
-					<div className="absolute top-0 right-0 h-full w-full bg-[rgb(0,0,0,0.5)] md:bg-gradient-to-r from-black via-transparent to-transparent"></div>
-					<div className="absolute bottom-0 left-0 h-1/4 w-full bg-gradient-to-t from-black to-transparent"></div>
+		<>
+			<div className="w-full h-screen min-h-[400px] sm:min-h-[786px] overflow-hidden  relative ">
+				<div className="absolute top-0 right-0 h-full w-full md:w-[70%] flex md:justify-end">
+					<div className="h-full w-full relative">
+						<img
+							src={getImageUrl(backdrop_path)}
+							alt="poster"
+							className="w-full h-full object-cover"
+						/>
+						<div className="absolute top-0 right-0 h-full w-full bg-[rgb(0,0,0,0.5)] md:bg-gradient-to-r from-black via-transparent to-transparent"></div>
+						<div className="absolute bottom-0 left-0 h-1/4 w-full bg-gradient-to-t from-black to-transparent"></div>
+					</div>
 				</div>
-			</div>
-			{/* Poster */}
-			<div className="absolute top-[100px] left-0 w-full">
-				<div className="container">
-					<div className="w-full md:w-[80%]">
-						<div className="flex flex-col gap-10">
-							<div className="flex gap-5">
-								<p className="text-primary-foreground">{genre}</p>
-								<div className="flex gap-2">
-									<p>{release_date ? new Date(release_date).getFullYear() : ""}</p>
-									<p>{country}</p>
-									<p>{getHoursTime({ minutes: runTime ?? 0 })}</p>
+				{/* Poster */}
+				<div className="absolute top-[100px] left-0 w-full">
+					<div className="container">
+						<div className="w-full md:w-[80%]">
+							<div className="flex flex-col gap-10">
+								<div className="flex gap-5">
+									<p className="text-primary">{genre}</p>
+									<div className="w-fit flex gap-2 items-center">
+										<p>{release_date ? new Date(release_date).getFullYear() : ""}</p>
+										<div className="h-[80%] min-w-[2px] bg-gray-500"></div>
+										<p>{country}</p>
+										<div className="h-[80%] min-w-[2px] bg-gray-500"></div>
+										<p>{getHoursTime({ minutes: runTime ?? 0 })}</p>
+									</div>
 								</div>
-							</div>
-							<div className="">
-								<p className="w-full text-white text-[70px] lg:text-[100px] font-heading leading-[70%] ">
-									{original_title}
-								</p>
-								<p className=" w-2/3">{overview ?? ""}</p>
-							</div>
-							<div className="flex gap-10">
-								<Link
-									to={`/movie/${id}`}
-									className={cn(buttonVariants({ variant: "simple" }), "text-white")}>
-									<p className="">Watch Now</p>
-								</Link>
-								<button
-									className={cn(
-										buttonVariants({ variant: "ghost" }),
-										"text-white hover:text-white"
-									)}>
-									<p className="">Add to Watchlist</p>
-								</button>
+								<div className="">
+									<p className="w-full text-accent-foreground text-[70px] lg:text-[100px] font-heading leading-[70%] ">
+										{original_title}
+									</p>
+									<p className=" w-2/3">{overview ?? ""}</p>
+								</div>
+								<div className="flex gap-10">
+									<Link
+										to={`/movie/${id}`}
+										className={cn(buttonVariants({ variant: "simple" }), "text-accent-foreground")}>
+										<p className="">Watch Now</p>
+									</Link>
+									<button
+										className={cn(
+											buttonVariants({ variant: "ghost" }),
+											"text-accent-foreground hover:text-accent-foreground"
+										)}>
+										<p className="">Add to Watchlist</p>
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 			{/* Now Playing Movies List */}
-			<div className="absolute bottom-0 left-0 w-full">
+			<div className="sm:mt-[-200px] mb-[200px]f w-full">
 				<div className="container">
-					<div className="h-full w-full flex flex-col">
-						<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-							{Movies && Movies?.length > 0
-								? Movies.slice(1, 5).map((mov: any) => (
-										<CoverMovieCard1 key={mov.id} movie={mov} className={""} />
-								  ))
-								: null}
-						</div>
+					<div className="w-full justify-right"></div>
+					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+						{Movies && Movies?.length > 0
+							? Movies.slice(1, 5).map((mov: any) => (
+									<CoverMovieCard1 key={mov.id} movie={mov} className={""} />
+							  ))
+							: null}
 					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 };
 

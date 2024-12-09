@@ -9,7 +9,7 @@ const Movie = () => {
 
 	return (
 		<div className="h-screen">
-			<div className="text-white">{Movie?.title}</div>
+			<div className="text-accent-foreground">{Movie?.title}</div>
 			{Movie && (
 				<iframe
 					src={`https://vidsrc.net/embed/movie?imdb=${Movie?.imdb_id}`}

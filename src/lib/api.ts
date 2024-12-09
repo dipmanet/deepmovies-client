@@ -6,12 +6,12 @@ import { queries } from "./queries";
 export const useFetchMovieGenres = () =>
 	useQuery({
 		queryKey: [queries.fetch_movie_genres],
-		queryFn: () => requests.get("/3/genre/movie/list"),
+		queryFn: () => requests.get("/3/genre/movie/list").then((res) => res?.genres),
 	});
 export const useFetchTVGenres = () =>
 	useQuery({
 		queryKey: [queries.fetch_tv_genres],
-		queryFn: () => requests.get("/3/genre/tv/list"),
+		queryFn: () => requests.get("/3/genre/tv/list").then((res) => res?.genres),
 	});
 
 // All lists

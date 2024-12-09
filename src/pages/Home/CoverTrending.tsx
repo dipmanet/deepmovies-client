@@ -28,15 +28,19 @@ const CoverTrending = () => {
 
 	return (
 		<div className="container py-20 flex flex-col gap-5">
-			<div className="w-full sm:w-[500px] flex gap-5 items-center justify-between border border-[red]">
-				<h4 className="text-[25px] text-white font-title">Trending</h4>
+			<div className="w-full sm:w-[500px] flex gap-5 items-center justify-between]">
+				<h4 className="text-[25px] text-accent-foreground font-title">Trending</h4>
 				<div className="flex gap-1">
 					{Tabs.map((tab) => (
-						<button
-							className={buttonVariants({ variant: "ghost" })}
+						<div
+							key={tab.id}
+							role="button"
+							className={`w-fit h-full font-title ${
+								tab.id === currentTab ? "text-accent-foreground" : "text-primary-foreground"
+							}`}
 							onClick={() => setCurrentTab(tab.id)}>
 							<p>{tab.title}</p>
-						</button>
+						</div>
 					))}
 				</div>
 			</div>
