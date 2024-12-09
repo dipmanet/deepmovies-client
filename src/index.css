@@ -50,32 +50,32 @@
 
 	/* .dark { */
 	:root {
-		--background: #080808;
-		--foreground: gray;
+		--background: black;
+		--foreground: #c2c2c2;
 
 		--card: #151515;
-		--card-foreground: gray;
+		--card-foreground: white;
 
 		--popover: black;
-		--popover-foreground: gray;
+		--popover-foreground: white;
 
 		--primary: #ff055f;
-		--primary-foreground: gray;
+		--primary-foreground: #c2c2c2;
 
-		--secondary: teal;
-		--secondary-foreground: gray;
+		--secondary: #121423;
+		--secondary-foreground: #c2c2c2;
 
-		--muted: gray;
-		--muted-foreground: white;
+		--muted: #878787;
+		--muted-foreground: gray;
 
 		--accent: black;
-		--accent-foreground: gray;
+		--accent-foreground: white;
 
 		--destructive: transparent;
-		--destructive-foreground: gray;
+		--destructive-foreground: #c2c2c2;
 
 		--border: black;
-		--ring: gray;
+		--ring: #c2c2c2;
 	}
 	* {
 		@apply border-border;
