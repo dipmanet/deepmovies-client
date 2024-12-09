@@ -39,7 +39,7 @@ const CoverMovieCard1 = ({
 		<Link
 			to={`/movie/${id}`}
 			className={`w-full h-full p-4 flex flex-col sm:flex-row gap-4 bg-gray-600 bg-opacity-40 backdrop-blur-md rounded-xl hover:scale-105 ${className}`}>
-			<div className="h-[120px] sm:h-fullf w-[120px] min-w-[120px] sm:w-[40%]f min-w-[40%]f rounded-xl">
+			<div className="h-[120px] w-full sm:w-[120px] min-w-[120px] sm:w-[40%]f min-w-[40%]f rounded-xl">
 				<img
 					src={getImageUrl(backdrop_path)}
 					alt=""

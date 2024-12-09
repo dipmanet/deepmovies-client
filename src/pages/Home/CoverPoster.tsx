@@ -89,7 +89,7 @@ const CoverPoster = () => {
 			<div className="sm:mt-[-200px] mb-[200px]f w-full">
 				<div className="container">
 					<div className="w-full justify-right"></div>
-					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+					<div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
 						{Movies && Movies?.length > 0
 							? Movies.slice(1, 5).map((mov: any) => (
 									<CoverMovieCard1 key={mov.id} movie={mov} className={""} />
