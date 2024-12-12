@@ -9,4 +9,7 @@ export const queries = {
 
 	fetch_movie: "fetch_movie",
 	fetch_movie_video: "fetch_movie_video",
+
+	search_movie: "search_movie",
+	fetch_movies_by_filter: "fetch_movies_by_filter",
 };

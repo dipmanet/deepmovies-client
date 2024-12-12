@@ -1,22 +1,38 @@
-export const navData = [
+export interface NavDataItem {
+	id: number;
+	title: string;
+	link: string;
+	isExternal: boolean;
+	children?: NavDataItem;
+}
+export const navData: NavDataItem[] = [
 	{
 		id: 1,
 		title: "Movies",
-		link: "/movies",
+		link: "/movie",
 		isExternal: false,
 	},
 	{
 		id: 2,
-		title: "Live",
-		link: "/live",
-		isExternal: false,
-	},
-	{
-		id: 3,
 		title: "Series",
 		link: "/series",
 		isExternal: false,
 	},
+	{
+		id: 3,
+		title: "Genres",
+		link: "/genre",
+		isExternal: false,
+		// children: [
+		// 	{
+		// 		id: 301,
+		// 		title: "Action",
+		// 		link: "/genre/action",
+		// 		isExternal: false,
+		// 	},
+		// ],
+	},
+
 	{
 		id: 4,
 		title: "Kids",

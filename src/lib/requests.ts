@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-// import { toast } from "sonner";
+import { toast } from "sonner";
 
 export const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 export const IMAGE_URL = import.meta.env.VITE_IMAGE_URL;
@@ -60,9 +60,43 @@ function remove(url: string, isMultipart = false) {
 		.catch((err) => handleRequestError(err));
 }
 
-function handleRequestError(err: AxiosError) {
-	// toast.error(`Error:\n`, err);
-	console.error("Request Error", err);
+function handleRequestError(err: AxiosError<any>) {
+	toast.error(`${err?.message ?? "Network Error"}`);
+	throw new Error(err?.message);
+	const abc = {
+		message: "Network Error",
+		name: "AxiosError",
+		stack:
+			"AxiosError: Network Error\n at XMLHttpRequest.handleError (http://localhost:5173/node_modules/.vite/deps/axios.js?v=48f1632c:1596:14)\n at Axios.request (http://localhost:5173/node_modules/.vite/deps/axios.js?v=48f1632c:2124:41)",
+		config: {
+			transitional: {
+				silentJSONParsing: true,
+				forcedJSONParsing: true,
+				clarifyTimeoutError: false,
+			},
+			adapter: ["xhr", "http", "fetch"],
+			transformRequest: [null],
+			transformResponse: [null],
+			timeout: 0,
+			xsrfCookieName: "XSRF-TOKEN",
+			xsrfHeaderName: "X-XSRF-TOKEN",
+			maxContentLength: -1,
+			maxBodyLength: -1,
+			env: {},
+			headers: {
+				Accept: "application/json, text/plain, */*",
+				"Content-Type": "application/json",
+				Authorization:
+					"Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmMGM1NzdiOGI4ODcwMzkwN2JiODIxZTI3Y2E5ZmRjZCIsIm5iZiI6MTY4NTU5Mjk3Ni42NTkwMDAyLCJzdWIiOiI2NDc4MWI5MDkzODI4ZTAxMTYyMmU0MjUiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0._2vOZTtZr0dFKAiKTuH5el68oAwB567uMxOFEjHWnhc",
+			},
+			baseURL: "https://api.themoviedb.org/",
+			responseType: "json",
+			params: {},
+			method: "get",
+			url: "/3/genre/movie/list",
+		},
+		code: "ERR_NETWORK",
+	};
 }
 export default {
 	post,

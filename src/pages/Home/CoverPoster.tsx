@@ -1,8 +1,10 @@
 import { CoverMovieCard1 } from "#components/Cards/MovieCards";
+import { DotPagination } from "#components/Pagination/index";
 import { buttonVariants } from "#components/ui/button";
 import { useFetchMovieDetails, useFetchNowPlayingMovies } from "#lib/api";
 import { MovieListType } from "#lib/datatypes";
 import { cn, getHoursTime, getImageUrl } from "#lib/utils";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const CoverPoster = () => {
@@ -24,16 +26,19 @@ const CoverPoster = () => {
 		vote_average,
 		vote_count,
 	} = (Movies?.length > 0 && Movies[0]) || {};
+	const itemsPerPage = 4;
+	const pageCount = Math.ceil(Movies?.length / itemsPerPage) || 0;
 
 	const { data: Movie } = useFetchMovieDetails({ id });
 	const genre = Movie?.genres?.length > 0 ? Movie?.genres[0]?.name : "";
 	const country = Movie?.origin_country?.length > 0 ? Movie?.origin_country[0] : "";
 	const runTime = Movie?.runtime ?? "";
 
-	console.log("test data", Movies);
+	const [currentPage, setCurrentPage] = useState(0);
+
 	return (
 		<>
-			<div className="w-full h-screen min-h-[400px] sm:min-h-[786px] overflow-hidden  relative ">
+			<div className="w-full h-screen min-h-[400px] sm:min-h-[786px] overflow-hidden relative ">
 				<div className="absolute top-0 right-0 h-full w-full md:w-[70%] flex md:justify-end">
 					<div className="h-full w-full relative">
 						<img
@@ -61,7 +66,7 @@ const CoverPoster = () => {
 									</div>
 								</div>
 								<div className="">
-									<p className="w-full text-accent-foreground text-[70px] lg:text-[100px] font-heading leading-[70%] ">
+									<p className="w-full text-accent-foreground text-[70px] lg:text-[100px] font-heading leading-[80%] ">
 										{original_title}
 									</p>
 									<p className=" w-2/3">{overview ?? ""}</p>
@@ -86,14 +91,20 @@ const CoverPoster = () => {
 				</div>
 			</div>
 			{/* Now Playing Movies List */}
-			<div className="sm:mt-[-200px] mb-[200px]f w-full">
+			<div className="sm:mt-[-200px] w-full relative">
 				<div className="container">
-					<div className="w-full justify-right"></div>
+					<div className="pb-4 w-full flex justify-between">
+						<h4 className="w-fit text-[25px] text-accent-foreground font-title whitespace-nowrap">
+							Now Playing
+						</h4>
+						<DotPagination pageCount={pageCount} onPageChange={(page) => setCurrentPage(page)} />
+					</div>
 					<div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
 						{Movies && Movies?.length > 0
-							? Movies.slice(1, 5).map((mov: any) => (
-									<CoverMovieCard1 key={mov.id} movie={mov} className={""} />
-							  ))
+							? Movies.slice(
+									currentPage * itemsPerPage,
+									currentPage * itemsPerPage + itemsPerPage
+							  ).map((mov: any) => <CoverMovieCard1 key={mov.id} movie={mov} className={""} />)
 							: null}
 					</div>
 				</div>
