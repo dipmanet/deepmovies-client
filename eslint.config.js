@@ -21,16 +21,8 @@ export default tseslint.config(
 			...reactHooks.configs.recommended.rules,
 			"react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
 			"@typescript-eslint/no-explicit-any": "off",
-			"no-unused-vars": "off", // Turns off the base rule for unused variables
-			"@typescript-eslint/no-unused-vars": [
-				"off", // Adjusts the rule for TypeScript files
-				{
-					vars: "all", // Checks all variables
-					args: "none", // Does not check function arguments
-					ignoreRestSiblings: true, // Ignores variables from rest destructuring
-					varsIgnorePattern: "^_", // Ignores variables starting with `_`
-				},
-			],
+			"no-unused-vars": "off",
+			"@typescript-eslint/no-unused-vars": "off",
 		},
 	}
 );
