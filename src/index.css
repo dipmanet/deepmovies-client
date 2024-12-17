@@ -62,13 +62,13 @@
 		--primary: #ff055f;
 		--primary-foreground: #c2c2c2;
 
-		--secondary: #121423;
+		--secondary: #010f94;
 		--secondary-foreground: #c2c2c2;
 
 		--muted: #878787;
 		--muted-foreground: gray;
 
-		--accent: black;
+		--accent: #121423;
 		--accent-foreground: white;
 
 		--destructive: transparent;
@@ -86,7 +86,7 @@
 }
 
 .container {
-	@apply w-full md:w-[95vw] lg:w-[85vw] px-5 md:px-0 mx-auto max-w-none;
+	@apply w-full md:w-[95vw] lg:w-[85vw] px-5 md:px-0 mx-auto max-w-[1400px];
 }
 
 .no-scrollbar {

@@ -1,14 +1,14 @@
 import { CoverMovieCard2 } from "#components/Cards/MovieCards";
-import { useFetchMovieDetails } from "#lib/api";
+import { useFetchEpisodeDetails, useFetchMovieDetails } from "#lib/api";
 import { getImageUrl } from "#lib/utils";
 import { Link, useLocation, useParams } from "react-router-dom";
 
-const MoviePage = () => {
-	const { id } = useParams();
+const EpisodePage = () => {
+	const { series_id, episode_id } = useParams();
 	const { pathname } = useLocation();
 	const pageType = pathname.split("/")[1];
 
-	const { data: Movie } = useFetchMovieDetails({ id: Number(id) });
+	const { data: Movie } = useFetchEpisodeDetails({ series_id: series_id, episode: episode_id });
 	// console.log("test movie", Movie);
 
 	return (
@@ -50,4 +50,4 @@ const MoviePage = () => {
 	);
 };
 
-export default MoviePage;
+export default EpisodePage;
