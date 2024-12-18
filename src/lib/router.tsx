@@ -7,6 +7,10 @@ import {
 	HomePage,
 	MoviePage,
 	MoviesPage,
+	SearchResultsPage,
+	AllTVSeriesPage,
+	TVSeriesPage,
+	EpisodePage,
 } from "./routes";
 
 export const router = createBrowserRouter([
@@ -44,10 +48,42 @@ export const router = createBrowserRouter([
 				),
 			},
 			{
+				path: "/series",
+				element: (
+					<BaseLayout>
+						<AllTVSeriesPage />
+					</BaseLayout>
+				),
+			},
+			{
+				path: "/series/:id",
+				element: (
+					<BaseLayout>
+						<TVSeriesPage />
+					</BaseLayout>
+				),
+			},
+			{
+				path: "/series/:series_id/episode/:episode_id",
+				element: (
+					<BaseLayout>
+						<EpisodePage />
+					</BaseLayout>
+				),
+			},
+			{
 				path: "/genre/:genre",
 				element: (
 					<BaseLayout>
 						<GenrePage />
+					</BaseLayout>
+				),
+			},
+			{
+				path: "/search/",
+				element: (
+					<BaseLayout>
+						<SearchResultsPage />
 					</BaseLayout>
 				),
 			},

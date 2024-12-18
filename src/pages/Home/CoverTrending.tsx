@@ -1,5 +1,5 @@
 import { CoverMovieCard2 } from "#components/Cards/MovieCards";
-import { buttonVariants } from "#components/ui/button";
+import CoverTVSeriesCard from "#components/Cards/TVSeriesCards/CoverTVSeriesCard";
 import { useFetchTopRatedMovies, useFetchTrendingMovies } from "#lib/api";
 import { MovieListType } from "#lib/datatypes";
 import { useState } from "react";
@@ -45,9 +45,13 @@ const CoverTrending = () => {
 				</div>
 			</div>
 			<div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10">
-				{items?.map((movie: MovieListType) => (
-					<CoverMovieCard2 key={movie?.id} movie={movie} />
-				))}
+				{items?.map((item: MovieListType) =>
+					currentTab === 1 ? (
+						<CoverMovieCard2 key={item?.id} movie={item} />
+					) : (
+						<CoverTVSeriesCard key={item?.id} series={item} />
+					)
+				)}
 			</div>
 		</div>
 	);
