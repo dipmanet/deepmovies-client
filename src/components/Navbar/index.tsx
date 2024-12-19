@@ -177,9 +177,9 @@ const Navbar = ({ className = "" }: { className?: string }) => {
 
 	return (
 		<div
-			className={` w-full bg-card shadow-background shadow-lg transition duration-500 ${
+			className={` w-full bg-card shadow-background shadow-lg transition duration-1000 ${
 				showHeader
-					? "sticky top-0 z-[50] opacity-100"
+					? "sticky top-0 z-[50] translate-y-0 opacity-100"
 					: "h-0 overflow-hidden -translate-y-[100%] opacity-0"
 			} ${className}`}>
 			<div className="container py-4 ">

@@ -64,7 +64,7 @@ export const router = createBrowserRouter([
 				),
 			},
 			{
-				path: "/series/:series_id/episode/:episode_id",
+				path: "/series/:series_id/season/:season_id/episode/:episode_id",
 				element: (
 					<BaseLayout>
 						<EpisodePage />

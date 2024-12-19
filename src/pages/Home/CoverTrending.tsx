@@ -1,6 +1,11 @@
 import { CoverMovieCard2 } from "#components/Cards/MovieCards";
 import CoverTVSeriesCard from "#components/Cards/TVSeriesCards/CoverTVSeriesCard";
-import { useFetchTopRatedMovies, useFetchTrendingMovies } from "#lib/api";
+import {
+	useFetchTopRatedMovies,
+	useFetchTrendingMovies,
+	useFetchTrendingTVSeries,
+	useFetchTVSeries,
+} from "#lib/api";
 import { MovieListType } from "#lib/datatypes";
 import { useState } from "react";
 const Tabs = [
@@ -18,7 +23,7 @@ const Tabs = [
 
 const CoverTrending = () => {
 	const { data: dataMovies } = useFetchTrendingMovies();
-	const { data: dataTVSeries } = useFetchTopRatedMovies();
+	const { data: dataTVSeries } = useFetchTrendingTVSeries();
 	const { results: Movies } = dataMovies || {};
 	const { results: TVSeries } = dataTVSeries || {};
 

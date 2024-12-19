@@ -1,15 +1,14 @@
 import { CoverMovieCard1 } from "#components/Cards/MovieCards";
 import { DotPagination } from "#components/Pagination/index";
 import { buttonVariants } from "#components/ui/button";
-import { useFetchMovieDetails, useFetchNowPlayingMovies } from "#lib/api";
-import { MovieListType } from "#lib/datatypes";
+import { useFetchMovie, useFetchNowPlayingMovies } from "#lib/api";
 import { cn, getHoursTime, getImageUrl } from "#lib/utils";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const CoverPoster = () => {
 	const { data } = useFetchNowPlayingMovies();
-	const { dates, page, results: Movies, total_pages, total_Movies } = data || {};
+	const { dates, page, results: Movies, total_pages } = data || {};
 	const {
 		adult,
 		backdrop_path,
@@ -25,14 +24,14 @@ const CoverPoster = () => {
 		video,
 		vote_average,
 		vote_count,
-	} = (Movies?.length > 0 && Movies[0]) || {};
+	} = (Movies && Movies?.length > 0 && Movies[0]) || {};
 	const itemsPerPage = 4;
-	const pageCount = Math.ceil(Movies?.length / itemsPerPage) || 0;
+	const pageCount = (Movies && Math.ceil(Movies?.length / itemsPerPage)) || 0;
 
-	const { data: Movie } = useFetchMovieDetails({ id });
-	const genre = Movie?.genres?.length > 0 ? Movie?.genres[0]?.name : "";
-	const country = Movie?.origin_country?.length > 0 ? Movie?.origin_country[0] : "";
-	const runTime = Movie?.runtime ?? "";
+	const { data: Movie } = useFetchMovie({ id });
+	const genre = Movie && Movie?.genres?.length > 0 ? Movie?.genres[0]?.name : "";
+	const country = Movie && Movie?.origin_country?.length > 0 ? Movie?.origin_country[0] : "";
+	const runTime = (Movie && Movie?.runtime) ?? "";
 
 	const [currentPage, setCurrentPage] = useState(0);
 
@@ -42,7 +41,7 @@ const CoverPoster = () => {
 				<div className="absolute top-0 right-0 h-full w-full md:w-[70%] flex md:justify-end">
 					<div className="h-full w-full relative">
 						<img
-							src={getImageUrl(backdrop_path)}
+							src={backdrop_path ? getImageUrl(backdrop_path) : ""}
 							alt="poster"
 							className="w-full h-full object-cover"
 						/>

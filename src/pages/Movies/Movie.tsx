@@ -1,5 +1,5 @@
 import { CoverMovieCard2 } from "#components/Cards/MovieCards";
-import { useFetchMovieDetails } from "#lib/api";
+import { useFetchMovie } from "#lib/api";
 import { getImageUrl } from "#lib/utils";
 import { Link, useLocation, useParams } from "react-router-dom";
 
@@ -8,7 +8,7 @@ const MoviePage = () => {
 	const { pathname } = useLocation();
 	const pageType = pathname.split("/")[1];
 
-	const { data: Movie } = useFetchMovieDetails({ id: Number(id) });
+	const { data: Movie } = useFetchMovie({ id: Number(id) });
 	// console.log("test movie", Movie);
 
 	return (
@@ -30,7 +30,7 @@ const MoviePage = () => {
 					<div className="w-full lg:w-[70%]">
 						{Movie && (
 							<iframe
-								src={`https://vidsrc.net/embed/movie?imdb=${Movie?.imdb_id}`}
+								src={`https://vidsrc.net/embed/movie?tmdb=${id}`}
 								className="w-full h-[400px] lg:h-[600px] rounded-2xl"
 								referrerPolicy="origin"
 								allowFullScreen></iframe>

@@ -1,5 +1,5 @@
 import { CoverMovieCard2 } from "#components/Cards/MovieCards";
-import { useFetchMovieDetails, useFetchTrendingMovies, useSearchMovie } from "#lib/api";
+import { useFetchTrendingMovies, useSearchMovie } from "#lib/api";
 import { DataContext } from "#lib/Context";
 import { MovieListType } from "#lib/datatypes";
 import { useContext, useState } from "react";
@@ -22,13 +22,13 @@ const MoviesPage = () => {
 				</div>
 				{searchText ? (
 					<div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10">
-						{results?.length > 0
+						{results && results?.length > 0
 							? results.map((mov: MovieListType) => <CoverMovieCard2 movie={mov} />)
 							: null}
 					</div>
 				) : (
 					<div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10">
-						{trendingMovies?.length > 0
+						{trendingMovies && trendingMovies?.length > 0
 							? trendingMovies.map((mov: MovieListType) => <CoverMovieCard2 movie={mov} />)
 							: null}
 					</div>

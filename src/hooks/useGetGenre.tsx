@@ -1,14 +1,21 @@
-import { useFetchGenres } from "#lib/api";
+import { useFetchMovieGenres, useFetchTVGenres } from "#lib/api";
 const useGetGenre = () => {
-	const { data } = useFetchGenres();
+	const { data: movieGenres } = useFetchMovieGenres();
+	const { data: tvGenres } = useFetchTVGenres();
 
-	const getGenre = (id: number) =>
-		data?.genres?.length > 0
-			? data?.genres.find((genre: { id: number; name: string }) => genre.id === id)?.name
+	const getMovieGenre = (id: number) =>
+		movieGenres && movieGenres?.length > 0
+			? movieGenres?.find((genre: { id: number; name: string }) => genre.id === id)?.name
+			: "";
+	const getTVGenre = (id: number) =>
+		tvGenres && tvGenres?.length > 0
+			? tvGenres?.find((genre: { id: number; name: string }) => genre.id === id)?.name
 			: "";
 	return {
-		genres: data?.genres,
-		getGenre,
+		movieGenres,
+		tvGenres,
+		getMovieGenre,
+		getTVGenre,
 	};
 };
 

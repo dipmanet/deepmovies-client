@@ -192,5 +192,17 @@ export interface EpisodeListType {
 	vote_count: number;
 }
 export interface EpisodeType {
+	air_date: string;
+	crew: any[];
+	episode_number: number;
+	guest_stars: any[];
 	id: number;
+	name: string;
+	overview: string;
+	production_code: string;
+	runtime: number;
+	season_number: number;
+	still_path: string;
+	vote_average: number;
+	vote_count: number;
 }

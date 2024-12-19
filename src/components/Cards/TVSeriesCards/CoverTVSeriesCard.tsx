@@ -1,4 +1,4 @@
-import { MovieListType, TVSeriesListType } from "#lib/datatypes";
+import { TVSeriesListType } from "#lib/datatypes";
 import { getImageUrl } from "#lib/utils";
 import { Link } from "react-router-dom";
 

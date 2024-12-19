@@ -1,15 +1,7 @@
-import { CoverMovieCard2 } from "#components/Cards/MovieCards";
 import CoverTVSeriesCard from "#components/Cards/TVSeriesCards/CoverTVSeriesCard";
-import {
-	useFetchMovieDetails,
-	useFetchTrendingMovies,
-	useFetchTrendingTVSeries,
-	useSearchMovie,
-	useSearchTVSeries,
-} from "#lib/api";
+import { useFetchTrendingTVSeries, useSearchTVSeries } from "#lib/api";
 import { DataContext } from "#lib/Context";
-import { MovieListType, TVSeriesListType } from "#lib/datatypes";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 
 const TVSeriesPage = () => {
 	const { searchText } = useContext(DataContext);
@@ -30,15 +22,13 @@ const TVSeriesPage = () => {
 				{searchText ? (
 					<div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10">
 						{searchResults && searchResults?.length > 0
-							? searchResults.map((mov: MovieListType) => (
-									<CoverMovieCard2 key={mov.id} movie={mov} />
-							  ))
+							? searchResults.map((series) => <CoverTVSeriesCard key={series.id} series={series} />)
 							: null}
 					</div>
 				) : (
 					<div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10">
 						{trendingTVSeries && trendingTVSeries?.length > 0
-							? trendingTVSeries.map((series: TVSeriesListType) => (
+							? trendingTVSeries.map((series) => (
 									<CoverTVSeriesCard key={series.id} series={series} />
 							  ))
 							: null}

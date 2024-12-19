@@ -1,9 +1,6 @@
-import { CoverMovieCard2 } from "#components/Cards/MovieCards";
 import CoverTVSeriesCard from "#components/Cards/TVSeriesCards/CoverTVSeriesCard";
-import SeasonCard from "#components/Cards/TVSeriesCards/SeasonCard";
-import { useFetchSeasonDetails, useFetchTVSeriesDetails } from "#lib/api";
+import { useFetchTVSeries } from "#lib/api";
 import { getImageUrl } from "#lib/utils";
-import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import Seasons from "./Seasons";
 
@@ -12,7 +9,7 @@ const TVSeriesPage = () => {
 	const { pathname } = useLocation();
 	const pageType = pathname.split("/")[1];
 
-	const { data: TVSeries } = useFetchTVSeriesDetails({ id: Number(id) });
+	const { data: TVSeries } = useFetchTVSeries({ id: Number(id) });
 
 	const {
 		adult,
@@ -64,8 +61,8 @@ const TVSeriesPage = () => {
 					<span className="text-accent-foreground">/</span>
 					<p className=" capitalize">{name}</p>
 				</div>
-				{/* main section */}
 				<div className="w-full flex flex-col lg:flex-row gap-8">
+					{/* main section */}
 					<div className="w-full lg:w-[70%] flex flex-col gap-20">
 						<img
 							src={getImageUrl(backdrop_path || "")}
@@ -76,9 +73,9 @@ const TVSeriesPage = () => {
 						{/* Seasons */}
 						<Seasons seriesId={Number(id)} seasons={seasons || []} />
 					</div>
-				</div>
-				<div className="w-full lg:w-[28%] flex flex-col gap-10">
-					<CoverTVSeriesCard series={TVSeries} />
+					<div className="w-full lg:w-[28%] flex flex-col gap-10">
+						<CoverTVSeriesCard series={TVSeries} />
+					</div>
 				</div>
 			</div>
 		</div>
