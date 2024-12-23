@@ -1,4 +1,5 @@
 import { CoverMovieCard2 } from "#components/Cards/MovieCards";
+import SklCoverMovieCard from "#components/Cards/Skeletons/SklCoverMovieCard";
 import CoverTVSeriesCard from "#components/Cards/TVSeriesCards/CoverTVSeriesCard";
 import {
 	useFetchTopRatedMovies,
@@ -22,8 +23,8 @@ const Tabs = [
 ];
 
 const CoverTrending = () => {
-	const { data: dataMovies } = useFetchTrendingMovies();
-	const { data: dataTVSeries } = useFetchTrendingTVSeries();
+	const { data: dataMovies, isLoading: isLoadingM } = useFetchTrendingMovies();
+	const { data: dataTVSeries, isLoading: isLoadingS } = useFetchTrendingTVSeries();
 	const { results: Movies } = dataMovies || {};
 	const { results: TVSeries } = dataTVSeries || {};
 
@@ -50,13 +51,17 @@ const CoverTrending = () => {
 				</div>
 			</div>
 			<div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10">
-				{items?.map((item: MovieListType) =>
-					currentTab === 1 ? (
-						<CoverMovieCard2 key={item?.id} movie={item} />
-					) : (
-						<CoverTVSeriesCard key={item?.id} series={item} />
-					)
-				)}
+				{!isLoadingM && !isLoadingS
+					? items?.map((item: MovieListType) =>
+							currentTab === 1 ? (
+								<CoverMovieCard2 key={item?.id} movie={item} />
+							) : (
+								<CoverTVSeriesCard key={item?.id} series={item} />
+							)
+					  )
+					: Array(10)
+							.fill("")
+							.map((_, idx) => <SklCoverMovieCard key={idx} />)}
 			</div>
 		</div>
 	);
