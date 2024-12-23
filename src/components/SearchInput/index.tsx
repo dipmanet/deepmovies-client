@@ -13,7 +13,8 @@ const SearchInput = () => {
 		if (txt) {
 			setSearchText(txt);
 			console.log("test path", pathname);
-			if (pathname === "/") navigate(`/search/?query=${txt}`);
+			// if (pathname === "/")
+			navigate(`/search/?query=${txt}`);
 		}
 	};
 

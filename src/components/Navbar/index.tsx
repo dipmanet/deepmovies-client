@@ -1,12 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { navData } from "src/lib/navData";
 import { RiVideoOnAiFill } from "react-icons/ri";
 import { FaHeartBroken } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
 import { buttonVariants } from "#components/ui/button";
 import { Link, useLocation } from "react-router-dom";
-import { DataContext } from "#lib/Context";
-import { useDebounce } from "#hooks/useDebounce";
 import { useFetchMovieGenres } from "#lib/api";
 import { GenreType } from "#lib/datatypes";
 import { FaBars } from "react-icons/fa";
