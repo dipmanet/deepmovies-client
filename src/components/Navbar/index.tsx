@@ -42,7 +42,15 @@ const Navbar = ({ className = "" }: { className?: string }) => {
 
 	useEffect(() => {
 		if (pathname === "/") setShowHeader(false);
-		return () => document.addEventListener("scroll", () => pathname === "/" && setShowHeader(true));
+		const handleScroll = () => {
+			const root = document.body;
+			if (pathname === "/") {
+				if ((root && root?.scrollTop) > 100) {
+					setShowHeader(true);
+				} else setShowHeader(false);
+			}
+		};
+		return () => document.body.addEventListener("scroll", handleScroll);
 	}, []);
 
 	const NavList = () => (
