@@ -41,16 +41,17 @@ const Navbar = ({ className = "" }: { className?: string }) => {
 	const pagePath = pathname.split("/")[1];
 
 	useEffect(() => {
+		if (window === undefined) {
+			setShowHeader(true);
+		}
 		if (pathname === "/") setShowHeader(false);
 		const handleScroll = () => {
-			const root = document.documentElement.scrollTop;
-			console.log("test scroll", root);
-			setShowHeader(true);
-			// if (pathname === "/") {
-			// 	if ((root && root?.scrollTop) > 100) {
-			// 		setShowHeader(true);
-			// 	} else setShowHeader(false);
-			// }
+			const scrollTop = document.documentElement.scrollTop;
+			if (pathname === "/") {
+				if (scrollTop > 100) {
+					setShowHeader(true);
+				} else setShowHeader(false);
+			}
 		};
 		return () => document.addEventListener("scroll", handleScroll);
 	}, []);
