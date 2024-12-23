@@ -41,7 +41,7 @@ const Navbar = ({ className = "" }: { className?: string }) => {
 	const pagePath = pathname.split("/")[1];
 
 	useEffect(() => {
-		if (!window) {
+		if (window === undefined || !window) {
 			setShowHeader(true);
 		}
 		if (pathname === "/") setShowHeader(false);
