@@ -1,41 +1,42 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { navData } from "src/lib/navData";
 import { RiVideoOnAiFill } from "react-icons/ri";
 import { FaHeartBroken } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
 import { buttonVariants } from "#components/ui/button";
-import { Link, useLocation } from "react-router-dom";
+import { data, Link, useLocation } from "react-router-dom";
 import { useFetchMovieGenres } from "#lib/api";
 import { GenreType } from "#lib/datatypes";
 import { FaBars } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import SearchInput from "#components/SearchInput";
+import { DataContext } from "#lib/Context";
 
 const Navbar = ({ className = "" }: { className?: string }) => {
 	const { pathname } = useLocation();
-	const { data: genres } = useFetchMovieGenres();
+	// const { movieGenres: genres } = useContext(DataContext);
 
 	const [currentNav, setCurrentNav] = useState(0);
 	const [showNavbar, setShowNavbar] = useState(false);
 	const [showHeader, setShowHeader] = useState(true);
 
-	const finalNavData = navData.map((nav) =>
-		nav.id === 3
-			? {
-					...nav,
-					children:
-						genres?.length > 0
-							? genres.map((genre: GenreType) => ({
-									id: genre.id,
-									name: genre.name.toLowerCase(),
-									title: genre.name,
-									link: `/genre/${genre.name.toLowerCase()?.replace(" ", "_")}`,
-									isExternal: false,
-							  }))
-							: [],
-			  }
-			: nav
-	);
+	// const finalNavData = navData.map((nav) =>
+	// 	nav.id === 3
+	// 		? {
+	// 				...nav,
+	// 				children:
+	// 					genres?.length > 0
+	// 						? genres.map((genre: GenreType) => ({
+	// 								id: genre.id,
+	// 								name: genre.name.toLowerCase(),
+	// 								title: genre.name,
+	// 								link: `/genre/${genre.name.toLowerCase()?.replace(" ", "_")}`,
+	// 								isExternal: false,
+	// 						  }))
+	// 						: [],
+	// 		  }
+	// 		: nav
+	// );
 	const pagePath = pathname.split("/")[1];
 
 	useEffect(() => {
@@ -58,7 +59,7 @@ const Navbar = ({ className = "" }: { className?: string }) => {
 		<div className="transition duration-300">
 			{/* for large screens */}
 			<ul className="hidden lg:flex gap-5 items-center">
-				{finalNavData.map((nav, id) =>
+				{navData.map((nav, id) =>
 					nav?.children ? (
 						<li key={id} className="relative" onMouseLeave={() => setCurrentNav(0)}>
 							<div

@@ -30,11 +30,17 @@ const MoviePage = () => {
 					<div className="w-full lg:w-[70%]">
 						{Movie && (
 							<iframe
-								src={`https://vidsrc.net/embed/movie?tmdb=${id}`}
+								src={`https://www.2embed.cc/embed/${id}`}
 								className="w-full h-[400px] lg:h-[600px] rounded-2xl"
 								referrerPolicy="origin"
 								allowFullScreen></iframe>
 						)}
+						{/* <iframe
+								src={`https://vidsrc.net/embed/movie?tmdb=${id}`}
+								https://www.2embed.cc/embed/tt10676048
+								className="w-full h-[400px] lg:h-[600px] rounded-2xl"
+								referrerPolicy="origin"
+								allowFullScreen></iframe> */}
 						{/* <img
 							src={getImageUrl(Movie?.backdrop_path)}
 							className="w-full h-[400px] lg:h-[600px] object-cover rounded-2xl border border-[white]"

@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Outlet } from "react-router-dom";
 import {
 	BaseLayout,
 	ErrorBoundary,
@@ -19,73 +19,66 @@ export const router = createBrowserRouter([
 		element: <PageNotFound />,
 	},
 	{
-		path: "/",
+		path: "",
 		errorElement: <ErrorBoundary />,
 		element: (
 			<BaseLayout>
-				<HomePage />
+				<Outlet />
 			</BaseLayout>
 		),
-	},
-	{
-		path: "",
-		errorElement: <ErrorBoundary />,
 		children: [
 			{
-				path: "/movie",
-				element: (
-					<BaseLayout>
-						<MoviesPage />
-					</BaseLayout>
-				),
+				path: "",
+				element: <HomePage />,
+				index: true,
 			},
 			{
-				path: "/movie/:id",
-				element: (
-					<BaseLayout>
-						<MoviePage />
-					</BaseLayout>
-				),
+				path: "movie",
+				element: <Outlet />,
+				children: [
+					{
+						path: "",
+						element: <MoviesPage />,
+						index: true,
+					},
+					{
+						path: ":id",
+						element: <MoviePage />,
+					},
+				],
 			},
 			{
-				path: "/series",
-				element: (
-					<BaseLayout>
-						<AllTVSeriesPage />
-					</BaseLayout>
-				),
+				path: "series",
+				element: <Outlet />,
+				children: [
+					{
+						path: "",
+						element: <AllTVSeriesPage />,
+						index: true,
+					},
+					{
+						path: ":id",
+						element: <TVSeriesPage />,
+					},
+					{
+						path: ":series_id/season/:season_id/episode/:episode_id",
+						element: <EpisodePage />,
+					},
+				],
 			},
 			{
-				path: "/series/:id",
-				element: (
-					<BaseLayout>
-						<TVSeriesPage />
-					</BaseLayout>
-				),
-			},
-			{
-				path: "/series/:series_id/season/:season_id/episode/:episode_id",
-				element: (
-					<BaseLayout>
-						<EpisodePage />
-					</BaseLayout>
-				),
-			},
-			{
-				path: "/genre/:genre",
-				element: (
-					<BaseLayout>
-						<GenrePage />
-					</BaseLayout>
-				),
+				path: "genre",
+				element: <Outlet />,
+				children: [
+					{
+						path: ":genre",
+						element: <GenrePage />,
+					},
+				],
 			},
 			{
 				path: "/search/",
-				element: (
-					<BaseLayout>
-						<SearchResultsPage />
-					</BaseLayout>
-				),
+				element: <SearchResultsPage />,
 			},
 		],
 	},

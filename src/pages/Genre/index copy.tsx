@@ -31,16 +31,26 @@ const GenrePage = () => {
 	return (
 		<div className="container grow">
 			<div className="py-20 w-full flex flex-col gap-10">
-				<div className="text-accent-foreground h-20 flex items-end">
-					<h4 className=" text-3xl font-bold text-white ">Genre</h4>
+				<div className="text-accent-foreground">
+					<h4 className=" text-3xl font-bold ">Genre</h4>
 				</div>
-				{/* <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10">
+				{/* {searchText ? ( */}
+				<div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10">
 					{results?.length > 0
 						? results.map((mov: MovieListType) => (
 								<CoverMovieCard2 movie={mov} className="w-[200px]" />
 						  ))
 						: null}
-				</div> */}
+				</div>
+				{/* ) : (
+					<div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10">
+						{trendingMovies?.length > 0
+							? trendingMovies.map((mov: MovieListType) => (
+									<CoverMovieCard2 movie={mov} className="w-[200px]" />
+							  ))
+							: null}
+					</div>
+				)} */}
 			</div>
 		</div>
 	);

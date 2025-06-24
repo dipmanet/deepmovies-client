@@ -42,7 +42,7 @@ const CoverPoster = () => {
 		<>
 			{!isLoading ? (
 				<div className="w-full h-screen min-h-[400px] sm:min-h-[786px] overflow-hidden relative ">
-					<div className="absolute top-0 right-0 h-full w-full md:w-[70%] flex md:justify-end">
+					<div className="absolute top 0 right-0 h-full w-full md:w-[70%] flex md:justify-end">
 						<div className="h-full w-full relative">
 							<img
 								src={backdrop_path ? getImageUrl(backdrop_path) : ""}

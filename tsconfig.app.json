@@ -23,13 +23,8 @@
 		"noUncheckedSideEffectImports": true,
 		"baseUrl": "./",
 		"paths": {
-			"#assets/*": ["src/assets/*"],
-			"#components/*": ["src/components/*"],
-			"#pages/*": ["src/pages/*"],
-			"#hooks/*": ["src/hooks/*"],
-			"#lib/*": ["src/lib/*"],
-			"#constants/*": ["src/constants/*"]
+			"#*": ["src/*"]
 		}
 	},
-	"include": ["src", "src/components/Cards/MovieCards/CoverMovieCard2.tsx"]
+	"include": ["src"]
 }
