@@ -10,7 +10,6 @@ const SearchResultsPage = () => {
 	const { data: searchData } = useSearchMulti({ query: searchText });
 
 	const { page, results, total_pages, total_results } = searchData || {};
-	console.log("test search results", results);
 
 	return (
 		<div className="container grow">

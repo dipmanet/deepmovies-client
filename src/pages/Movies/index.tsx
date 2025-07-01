@@ -12,8 +12,6 @@ const MoviesPage = () => {
 	const { page, results, total_pages, total_results } = searchData || {};
 	const { results: trendingMovies } = trendingMoviesData || {};
 
-	console.log("test search", searchText);
-
 	return (
 		<div className="container grow">
 			<div className="py-20 w-full flex flex-col gap-10">

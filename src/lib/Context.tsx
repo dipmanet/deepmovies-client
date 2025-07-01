@@ -1,20 +1,12 @@
-	import React from "react";
-	import { GenreType } from "./datatypes";
-	interface DataContextProps {
-		movieGenres: GenreType[];
-		tvGenres: GenreType[];
+import React from "react";
+interface DataContextProps {
+	searchText: string;
+	setSearchText: React.Dispatch<React.SetStateAction<string>>;
+}
 
-		searchText: string;
-		setSearchText: React.Dispatch<React.SetStateAction<string>>;
-	}
+export const initData = {
+	searchText: "",
+	setSearchText: () => null,
+};
 
-	export const initData = {
-		movieGenres: [],
-		tvGenres: [],
-
-		searchText: "",
-		setSearchText: () => null,
-	};
-
-	export const DataContext = React.createContext<DataContextProps>(initData);
-``
+export const DataContext = React.createContext<DataContextProps>(initData);

@@ -14,9 +14,10 @@ export const queries = {
 
 	fetch_movie: "fetch_movie",
 	fetch_movie_video: "fetch_movie_video",
-
 	search_multi: "search_multi",
 	search_movie: "search_movie",
 	search_tv_series: "search_tv_series",
+
 	fetch_movies_by_filter: "fetch_movies_by_filter",
+	fetch_tv_series_by_filter: "fetch_tv_series_by_filter",
 };

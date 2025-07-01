@@ -1,16 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { navData } from "src/lib/navData";
 import { RiVideoOnAiFill } from "react-icons/ri";
 import { FaHeartBroken } from "react-icons/fa";
 import { IoIosNotifications } from "react-icons/io";
 import { buttonVariants } from "#components/ui/button";
-import { data, Link, useLocation } from "react-router-dom";
-import { useFetchMovieGenres } from "#lib/api";
-import { GenreType } from "#lib/datatypes";
+import { Link, useLocation } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import SearchInput from "#components/SearchInput";
-import { DataContext } from "#lib/Context";
 
 const Navbar = ({ className = "" }: { className?: string }) => {
 	const { pathname } = useLocation();
@@ -129,7 +126,7 @@ const Navbar = ({ className = "" }: { className?: string }) => {
 								<ImCross className="h-5 w-5" />
 							</div>
 						</div>
-						<ul className="flex flex-col gap-5 items-center">
+						{/* <ul className="flex flex-col gap-5 items-center">
 							{finalNavData.map((nav, id) =>
 								nav?.children ? (
 									<li key={id} className="relative" onMouseLeave={() => setCurrentNav(0)}>
@@ -175,7 +172,7 @@ const Navbar = ({ className = "" }: { className?: string }) => {
 									</li>
 								)
 							)}
-						</ul>
+						</ul> */}
 					</div>
 				)}
 			</div>
@@ -207,11 +204,11 @@ const Navbar = ({ className = "" }: { className?: string }) => {
 
 					{/* watchlist */}
 					<div className="hidden sm:flex gap-5 items-center">
-						<FaHeartBroken className="size-6" />
+						{/* <FaHeartBroken className="size-6" />
 						<div className="relative">
 							<IoIosNotifications className="size-8" />
 							<div className="absolute size-2 rounded-full top-1 right-1 bg-[red] opacity-90 shadow-md"></div>
-						</div>
+						</div> */}
 						<div className="flex gap-3">
 							<a href={"/login"} className={buttonVariants({ variant: "simple" })}>
 								<p className="w-[50px]">Sign in</p>

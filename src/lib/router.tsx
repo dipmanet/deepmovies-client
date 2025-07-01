@@ -3,6 +3,7 @@ import {
 	BaseLayout,
 	ErrorBoundary,
 	PageNotFound,
+	GenresPage,
 	GenrePage,
 	HomePage,
 	MoviePage,
@@ -70,6 +71,11 @@ export const router = createBrowserRouter([
 				path: "genre",
 				element: <Outlet />,
 				children: [
+					{
+						path: "",
+						element: <GenresPage />,
+						index: true,
+					},
 					{
 						path: ":genre",
 						element: <GenrePage />,

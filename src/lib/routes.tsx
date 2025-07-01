@@ -11,5 +11,6 @@ export const MoviePage = React.lazy(() => import("#pages/Movies/Movie"));
 export const AllTVSeriesPage = React.lazy(() => import("#pages/TVSeries"));
 export const TVSeriesPage = React.lazy(() => import("#pages/TVSeries/TVSeries"));
 export const EpisodePage = React.lazy(() => import("#pages/TVSeries/Episode"));
-export const GenrePage = React.lazy(() => import("#pages/Genre"));
+export const GenresPage = React.lazy(() => import("#pages/Genres"));
+export const GenrePage = React.lazy(() => import("#pages/Genres/Genre"));
 export const SearchResultsPage = React.lazy(() => import("#pages/SearchResults"));

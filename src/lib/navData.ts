@@ -33,10 +33,10 @@ export const navData: NavDataItem[] = [
 		// ],
 	},
 
-	{
-		id: 4,
-		title: "Kids",
-		link: "/kids",
-		isExternal: false,
-	},
+	// {
+	// 	id: 4,
+	// 	title: "Kids",
+	// 	link: "/kids",
+	// 	isExternal: false,
+	// },
 ];
