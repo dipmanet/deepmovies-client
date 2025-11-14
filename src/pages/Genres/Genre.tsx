@@ -1,4 +1,5 @@
 import { CoverMovieCard2 } from "#components/Cards/MovieCards";
+import useGenre from "#hooks/useGenre";
 import {
 	useFetchMovieGenres,
 	useFetchMoviesByFilter,
@@ -6,17 +7,23 @@ import {
 	useFetchTVSeriesByFilter,
 } from "#lib/api";
 import { MovieListType } from "#lib/datatypes";
-import { GenreTabs } from "#lib/tabs";
+import { ContentTypes } from "#lib/expressions";
+import { cn } from "#lib/utils";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 
 const GenrePage = () => {
 	const { genre } = useParams();
-	const { data: movieGenres } = useFetchMovieGenres();
-	const { data: tvGenres } = useFetchTVGenres();
+	const [searchParams, setSearchParams] = useSearchParams();
+	const contentType = searchParams.get("content_type");
+	const { movieGenres, tvGenres } = useGenre();
 
-	const [currentTab, setCurrentTab] = useState(GenreTabs[0]);
-	const genres = (currentTab?.id == "movies" ? movieGenres : tvGenres) || [];
+	const [currentTab, setCurrentTab] = useState(
+		contentType
+			? ContentTypes.find((tab) => tab.name === contentType) || ContentTypes[0]
+			: ContentTypes[0]
+	);
+	const genres = (currentTab?.name == "movies" ? movieGenres : tvGenres) || [];
 
 	const genreObject =
 		genres?.length > 0
@@ -30,9 +37,9 @@ const GenrePage = () => {
 		...(genreObject?.id ? { with_genres: `${genreObject?.id}` } : {}),
 	});
 
-	const { results } = (genreObject ? filterMovies : filterTVSeries) || {};
+	const { results } = currentTab.name === "movies" ? filterMovies || {} : filterTVSeries || {};
 
-	console.log("test genre", genre, results, genreObject?.id);
+	console.log("test genre", results);
 
 	return (
 		<div className="container grow">
@@ -41,18 +48,21 @@ const GenrePage = () => {
 					<h4 className=" text-3xl font-bold capitalize">
 						{genreObject?.name || genre?.split("_").join(" ")} Genre
 					</h4>
-					<div className="flex gap-2">
-						{GenreTabs.map((tab) => (
-							<button
+					<div className="flex gap-4 items-center">
+						{ContentTypes.map((tab) => (
+							<div
 								key={tab.id}
-								className={`px-4 py-2 rounded-lg cursor-pointer transition-colors ${
-									currentTab.id === tab.id ? "bg-secondary text-white" : "text-foreground"
-								}`}
-								onClick={() => setCurrentTab(tab)}
-								// disabled={!!genreObject}
-							>
-								{tab.name}
-							</button>
+								className={cn(
+									`w-fit h-full flex gap-1 items-center font-title cursor-pointer`,
+									tab.id === currentTab.id ? "text-accent-foreground" : "text-primary-foreground"
+								)}
+								onClick={() => {
+									setCurrentTab(tab);
+									setSearchParams({ content_type: tab.name });
+								}}>
+								<tab.icon />
+								<p>{tab.title}</p>
+							</div>
 						))}
 					</div>
 				</div>

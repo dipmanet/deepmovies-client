@@ -129,7 +129,7 @@ export const useFetchMoviesByFilter = (
 	useQuery<ResponseType<MovieListType>>({
 		queryKey: [queries.fetch_movies_by_filter, params],
 		queryFn: () => requests.get(`/3/discover/movie`, { ...params }),
-		enabled: Object.keys(params)?.length > 0,
+		// enabled: Object.keys(params)?.length > 0,
 	});
 export const useFetchTVSeriesByFilter = (
 	params: { with_genres?: string; [key: string]: string | undefined } //{ with_genres : numbers seperated by comma }
@@ -137,5 +137,5 @@ export const useFetchTVSeriesByFilter = (
 	useQuery<ResponseType<MovieListType>>({
 		queryKey: [queries.fetch_tv_series_by_filter, params],
 		queryFn: () => requests.get(`/3/discover/tv`, { ...params }),
-		enabled: Object.keys(params)?.length > 0,
+		// enabled: Object.keys(params)?.length > 0,
 	});

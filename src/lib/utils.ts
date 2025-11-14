@@ -22,3 +22,8 @@ export const getHoursTime = ({ hours = 0, minutes = 0, seconds = 0 }: TimeProps)
 		min > 0 ? (min === 1 ? min + " min " : min + " mins ") : ""
 	}${sec > 0 ? (sec === 1 ? sec + " sec " : sec + " secs ") : ""}`;
 };
+
+export const getDateString = (dateString: string) => {
+	const date = new Date(dateString);
+	return date.toLocaleDateString("en-GB", { year: "numeric", month: "short", day: "numeric" });
+};

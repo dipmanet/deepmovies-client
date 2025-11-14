@@ -1,5 +1,5 @@
 import { useFetchMovieGenres, useFetchTVGenres } from "#lib/api";
-const useGetGenre = () => {
+const useGenre = () => {
 	const { data: movieGenres } = useFetchMovieGenres();
 	const { data: tvGenres } = useFetchTVGenres();
 
@@ -19,4 +19,4 @@ const useGetGenre = () => {
 	};
 };
 
-export default useGetGenre;
+export default useGenre;

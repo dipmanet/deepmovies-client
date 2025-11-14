@@ -1,6 +1,7 @@
+import useGenre from "#hooks/useGenre";
 import { DataContext } from "#lib/Context";
 import { GenreType, MovieListType } from "#lib/datatypes";
-import { getImageUrl } from "#lib/utils";
+import { getDateString, getImageUrl } from "#lib/utils";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 
@@ -28,17 +29,12 @@ const CoverMovieCard1 = ({
 		vote_count,
 	} = movie;
 
-	const { movieGenres } = useContext(DataContext);
-	const genre =
-		(genre_ids?.length > 0 &&
-			movieGenres?.length > 0 &&
-			(movieGenres?.find((genre: GenreType) => genre.id === genre_ids[0]) as GenreType | undefined)
-				?.name) ||
-		"";
+	const { getMovieGenre } = useGenre();
+	const genre = getMovieGenre(genre_ids[0]) || "";
 	return (
 		<Link
 			to={`/movie/${id}`}
-			className={`w-full h-full p-4 flex flex-col sm:flex-row gap-4 bg-gray-600 bg-opacity-40 backdrop-blur-md rounded-xl hover:scale-105 ${className}`}>
+			className={`w-full h-full p-4 flex flex-col sm:flex-row gap-4 bg-gray-600 bg-opacity-40 backdrop-blur-md rounded-xl transition duration-500  hover:scale-105 ${className}`}>
 			<div className="h-[120px] w-full sm:w-[120px] min-w-[120px] sm:w-[40%]f min-w-[40%]f rounded-xl">
 				<img
 					src={getImageUrl(backdrop_path)}
@@ -51,7 +47,7 @@ const CoverMovieCard1 = ({
 					{genre}
 				</p>
 				<p className="text-accent-foreground">{title}</p>
-				<p>{release_date}</p>
+				<p>{getDateString(release_date)}</p>
 			</div>
 		</Link>
 	);
