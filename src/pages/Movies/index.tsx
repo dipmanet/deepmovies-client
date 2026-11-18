@@ -1,59 +1,118 @@
 import { CoverMovieCard2 } from "#components/Cards/MovieCards";
-import { useFetchTrendingMovies, useSearchMovie } from "#lib/api";
-import { DataContext } from "#lib/Context";
+import SklCoverMovieCard from "#components/Cards/Skeletons/SklCoverMovieCard";
+import {
+  useFetchNowPlayingMovies,
+  useFetchPopularMovies,
+  useFetchTopRatedMovies,
+  useFetchUpcomingMovies,
+} from "#lib/api";
 import { MovieListType } from "#lib/datatypes";
-import { useContext, useState } from "react";
+import { cn } from "#lib/utils";
+import { useMemo, useState } from "react";
+import { HiOutlineClock, HiOutlineFire, HiOutlineStar, HiOutlineTrendingUp } from "react-icons/hi";
+
+const MOVIE_CATEGORIES = [
+  {
+    id: "popular",
+    title: "Popular",
+    icon: HiOutlineFire,
+    useFetch: useFetchPopularMovies,
+  },
+  {
+    id: "top-rated",
+    title: "Top Rated",
+    icon: HiOutlineStar,
+    useFetch: useFetchTopRatedMovies,
+  },
+  {
+    id: "upcoming",
+    title: "Upcoming",
+    icon: HiOutlineTrendingUp,
+    useFetch: useFetchUpcomingMovies,
+  },
+  {
+    id: "now-playing",
+    title: "Now Playing",
+    icon: HiOutlineClock,
+    useFetch: useFetchNowPlayingMovies,
+  },
+] as const;
+
+type CategoryId = (typeof MOVIE_CATEGORIES)[number]["id"];
 
 const MoviesPage = () => {
-  const { searchText } = useContext(DataContext);
-  const { data: searchData } = useSearchMovie({ query: searchText });
-  const { data: trendingMoviesData } = useFetchTrendingMovies();
+  const [activeCategory, setActiveCategory] = useState<CategoryId>("popular");
 
-  const { page, results, total_pages, total_results } = searchData || {};
-  const { results: trendingMovies } = trendingMoviesData || {};
+  const selectedCategory = useMemo(
+    () =>
+      MOVIE_CATEGORIES.find(
+        (cat) => cat.id === activeCategory,
+      ) ?? MOVIE_CATEGORIES[0],
+    [activeCategory],
+  );
+
+  const { data: moviesData, isLoading } = selectedCategory.useFetch();
+
+  const { results: movies } = moviesData || {};
 
   return (
     <div className="container grow">
-      <div className="py-20 w-full flex flex-col gap-10">
-        <div className="text-accent-foreground">
-          <h4 className=" text-3xl font-bold ">Movies</h4>
+      <div className="py-12 w-full flex flex-col gap-8">
+        <div className="w-full flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="h-[28px] w-1 rounded-full bg-primary" />
+            <h1 className="text-[22px] sm:text-[26px] font-heading text-accent-foreground tracking-wide">
+              Movies
+            </h1>
+          </div>
+
+          <div className="flex items-center gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/[0.06]">
+            {MOVIE_CATEGORIES.map((category) => {
+              const Icon = category.icon;
+              return (
+                <button
+                  key={category.id}
+                  className={cn(
+                    "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[13px] font-medium",
+                    "transition-all duration-200 ease-in-out",
+                    category.id === activeCategory
+                      ? "bg-primary text-white shadow-sm"
+                      : "text-muted-foreground hover:text-foreground hover:bg-white/[0.06]",
+                  )}
+                  onClick={() => setActiveCategory(category.id)}
+                >
+                  <Icon className="text-[13px]" />
+                  <span>{category.title}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
-        {searchText ? (
-          <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10">
-            {results && results?.length > 0
-              ? results.map((mov: MovieListType) => (
-                  <CoverMovieCard2 movie={mov} />
+
+        <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+          {isLoading
+            ? Array(10)
+                .fill("")
+                .map((_, idx) => <SklCoverMovieCard key={idx} />)
+            : movies && movies.length > 0
+              ? movies.map((mov: MovieListType) => (
+                  <CoverMovieCard2
+                    key={mov.id}
+                    movie={mov}
+                    showDetails
+                  />
                 ))
-              : null}
-          </div>
-        ) : (
-          <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10">
-            {trendingMovies && trendingMovies?.length > 0
-              ? trendingMovies.map((mov: MovieListType) => (
-                  <CoverMovieCard2 movie={mov} />
-                ))
-              : null}
-          </div>
-        )}
+              : (
+                  <div className="col-span-full flex items-center justify-center py-20">
+                    <p className="text-muted-foreground text-base">
+                      No {selectedCategory.title.toLowerCase()} movies found.
+                    </p>
+                  </div>
+                )}
+        </div>
       </div>
     </div>
   );
 };
 
 export default MoviesPage;
-
-{
-  /* <iframe
-								src={`https://vidsrc.net/embed/movie?tmdb=${id}`}
-								https://www.2embed.cc/embed/tt10676048
-								className="w-full h-[400px] lg:h-[600px] rounded-2xl"
-								referrerPolicy="origin"
-								allowFullScreen></iframe> */
-}
-{
-  /* <img
-							src={getImageUrl(Movie?.backdrop_path)}
-							className="w-full h-[400px] lg:h-[600px] object-cover rounded-2xl border border-[white]"
-							alt=""
-						/> */
-}

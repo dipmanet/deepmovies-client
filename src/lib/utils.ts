@@ -1,29 +1,82 @@
+import {
+  useFetchTopRatedMovies,
+  useFetchUpcomingMovies,
+  useFetchTrendingTodayMovies,
+  useFetchPopularMovies,
+  useFetchTrendingThisWeekMovies,
+} from "./api";
 import { IMAGE_URL } from "./requests";
 
 export const cn = (...inputs: string[]) => {
-	return inputs.join(" ");
+  return inputs.join(" ");
 };
 
-export const getImageUrl = (image_id: string, options = { width: 600, height: 900 }) => {
-	return image_id ? `${IMAGE_URL}w${options.width}_and_h${options.height}_bestv2${image_id}` : "";
+export const getImageUrl = (
+  image_id: string,
+  options = { width: 600, height: 900 },
+) => {
+  return image_id
+    ? `${IMAGE_URL}w${options.width}_and_h${options.height}_bestv2${image_id}`
+    : "";
 };
 
 interface TimeProps {
-	hours?: number;
-	minutes?: number;
-	seconds?: number;
+  hours?: number;
+  minutes?: number;
+  seconds?: number;
 }
-export const getHoursTime = ({ hours = 0, minutes = 0, seconds = 0 }: TimeProps) => {
-	const totalSec = hours * 3600 + minutes * 60 + seconds;
-	const hr = Math.floor(totalSec / 3600);
-	const min = Math.floor((totalSec - hr * 3600) / 60);
-	const sec = totalSec % 60;
-	return `${hr > 0 ? (hr === 1 ? hr + " hr " : hr + " hrs ") : ""}${
-		min > 0 ? (min === 1 ? min + " min " : min + " mins ") : ""
-	}${sec > 0 ? (sec === 1 ? sec + " sec " : sec + " secs ") : ""}`;
+export const getHoursTime = ({
+  hours = 0,
+  minutes = 0,
+  seconds = 0,
+}: TimeProps) => {
+  const totalSec = hours * 3600 + minutes * 60 + seconds;
+  const hr = Math.floor(totalSec / 3600);
+  const min = Math.floor((totalSec - hr * 3600) / 60);
+  const sec = totalSec % 60;
+  return `${hr > 0 ? (hr === 1 ? hr + " hr " : hr + " hrs ") : ""}${
+    min > 0 ? (min === 1 ? min + " min " : min + " mins ") : ""
+  }${sec > 0 ? (sec === 1 ? sec + " sec " : sec + " secs ") : ""}`;
 };
 
 export const getDateString = (dateString: string) => {
-	const date = new Date(dateString);
-	return date.toLocaleDateString("en-GB", { year: "numeric", month: "short", day: "numeric" });
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-GB", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 };
+
+export const movieCategoriesData = [
+  {
+    id: 1,
+    name: "Trending Today",
+    value: "trending_today",
+    fetchFunction: useFetchTrendingTodayMovies,
+  },
+  {
+    id: 2,
+    name: "Trending This Week",
+    value: "trending_this_week",
+    fetchFunction: useFetchTrendingThisWeekMovies,
+  },
+  {
+    id: 3,
+    name: "Top Rated",
+    value: "top_rated",
+    fetchFunction: useFetchTopRatedMovies,
+  },
+  {
+    id: 4,
+    name: "Popular",
+    value: "popular",
+    fetchFunction: useFetchPopularMovies,
+  },
+  {
+    id: 5,
+    name: "Upcoming",
+    value: "upcoming",
+    fetchFunction: useFetchUpcomingMovies,
+  },
+];
