@@ -16,6 +16,7 @@ import {
   HiOutlineStar,
   HiOutlineTrendingUp,
 } from "react-icons/hi";
+import { SEOMeta, BreadcrumbStructuredData } from "#components/SEO";
 
 const TVSERIES_CATEGORIES = [
   {
@@ -60,59 +61,88 @@ const TVSeriesPage = () => {
 
   const { results: tvSeries } = tvSeriesData || {};
 
+  const breadcrumbs = [
+    { name: "Home", url: "/" },
+    { name: "TV Series", url: "/series" },
+  ];
+
+  const breadcrumbStructuredData = BreadcrumbStructuredData(breadcrumbs);
+
+  const categoryTitles: Record<CategoryId, string> = {
+    popular: "Popular TV Series",
+    "top-rated": "Top Rated TV Series",
+    "airing-today": "TV Series Airing Today",
+    "airing-this-week": "TV Series Airing This Week",
+  };
+
+  const categoryDescriptions: Record<CategoryId, string> = {
+    popular: "Discover the most popular TV series right now. Trending shows everyone is watching.",
+    "top-rated": "Explore the highest-rated TV series of all time. Critically acclaimed shows you must watch.",
+    "airing-today": "See what TV series are airing new episodes today. Stay up to date with your favorite shows.",
+    "airing-this-week": "Check out TV series airing new episodes this week. Never miss an episode.",
+  };
+
   return (
-    <div className="container grow">
-      <div className="py-12 w-full flex flex-col gap-8">
-        <div className="w-full flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="h-[28px] w-1 rounded-full bg-primary" />
-            <h1 className="text-[22px] sm:text-[26px] font-heading text-accent-foreground tracking-wide">
-              Series
-            </h1>
-          </div>
-
-          <div className="flex items-center gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/[0.06]">
-            {TVSERIES_CATEGORIES.map((category) => {
-              const Icon = category.icon;
-              return (
-                <button
-                  key={category.id}
-                  className={cn(
-                    "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[13px] font-medium",
-                    "transition-all duration-200 ease-in-out",
-                    category.id === activeCategory
-                      ? "bg-primary text-white shadow-sm"
-                      : "text-muted-foreground hover:text-foreground hover:bg-white/[0.06]",
-                  )}
-                  onClick={() => setActiveCategory(category.id)}
-                >
-                  <Icon className="text-[13px]" />
-                  <span>{category.title}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-          {isLoading ? (
-            Array(10)
-              .fill("")
-              .map((_, idx) => <SklCoverMovieCard key={idx} />)
-          ) : tvSeries && tvSeries.length > 0 ? (
-            tvSeries.map((series: TVSeriesListType) => (
-              <CoverTVSeriesCard key={series.id} series={series} showDetails />
-            ))
-          ) : (
-            <div className="col-span-full flex items-center justify-center py-20">
-              <p className="text-muted-foreground text-base">
-                No {selectedCategory.title.toLowerCase()} Series found.
-              </p>
+    <>
+      <SEOMeta
+        title={categoryTitles[activeCategory]}
+        description={categoryDescriptions[activeCategory]}
+        canonical="/series"
+        structuredData={breadcrumbStructuredData}
+      />
+      <div className="container grow">
+        <div className="py-12 w-full flex flex-col gap-8">
+          <div className="w-full flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="h-[28px] w-1 rounded-full bg-primary" />
+              <h1 className="text-[22px] sm:text-[26px] font-heading text-accent-foreground tracking-wide">
+                Series
+              </h1>
             </div>
-          )}
+
+            <div className="flex items-center gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/[0.06]">
+              {TVSERIES_CATEGORIES.map((category) => {
+                const Icon = category.icon;
+                return (
+                  <button
+                    key={category.id}
+                    className={cn(
+                      "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[13px] font-medium",
+                      "transition-all duration-200 ease-in-out",
+                      category.id === activeCategory
+                        ? "bg-primary text-white shadow-sm"
+                        : "text-muted-foreground hover:text-foreground hover:bg-white/[0.06]",
+                    )}
+                    onClick={() => setActiveCategory(category.id)}
+                  >
+                    <Icon className="text-[13px]" />
+                    <span>{category.title}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+            {isLoading ? (
+              Array(10)
+                .fill("")
+                .map((_, idx) => <SklCoverMovieCard key={idx} />)
+            ) : tvSeries && tvSeries.length > 0 ? (
+              tvSeries.map((series: TVSeriesListType) => (
+                <CoverTVSeriesCard key={series.id} series={series} showDetails />
+              ))
+            ) : (
+              <div className="col-span-full flex items-center justify-center py-20">
+                <p className="text-muted-foreground text-base">
+                  No {selectedCategory.title.toLowerCase()} Series found.
+                </p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

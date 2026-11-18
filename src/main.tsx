@@ -5,19 +5,21 @@ import App from "./App.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Store from "#lib/Store.tsx";
 import { Toaster } from "sonner";
-// import Loader from "#components/Loader/index.tsx";
+import { SEOHelmetProvider } from "#components/SEO";
 
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
 		{/* <Suspense fallback={<Loader />}> */}
-		<QueryClientProvider client={queryClient}>
-			<Store>
-				<Toaster />
-				<App />
-			</Store>
-		</QueryClientProvider>
+		<SEOHelmetProvider>
+			<QueryClientProvider client={queryClient}>
+				<Store>
+					<Toaster />
+					<App />
+				</Store>
+			</QueryClientProvider>
+		</SEOHelmetProvider>
 		{/* </Suspense> */}
 	</StrictMode>
 );

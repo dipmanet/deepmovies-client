@@ -1,0 +1,26 @@
+# Robots.txt for DeepMovies
+User-agent: *
+Allow: /
+
+# Disallow admin, API, and private paths
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /_next/
+Disallow: /node_modules/
+Disallow: /*.json$
+Disallow: /*?*
+
+# Allow important assets
+Allow: /assets/
+Allow: /images/
+Allow: /og-image.jpg
+
+# Sitemap location
+Sitemap: https://deepmovies.example.com/sitemap.xml
+
+# Host
+Host: https://deepmovies.example.com
+
+# Crawl-delay (optional, adjust as needed)
+# Crawl-delay: 10

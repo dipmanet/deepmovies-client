@@ -3,6 +3,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 
 import { CoverMovieCard2 } from "#components/Cards/MovieCards";
 import SklCoverMovieCard from "#components/Cards/Skeletons/SklCoverMovieCard";
+import { SEOMeta, MovieStructuredData, BreadcrumbStructuredData } from "#components/SEO";
 
 import {
   useFetchMovie,
@@ -129,8 +130,26 @@ const MoviePage = () => {
 
   const playerSrc = `${import.meta.env.VITE_VIDEO_URL}/movie/${movieId}/`;
 
+  const breadcrumbs = [
+    { name: "Home", url: "/" },
+    { name: "Movies", url: "/movie" },
+    { name: Movie?.title ?? "Movie", url: `/movie/${movieId}` },
+  ];
+
+  const movieStructuredData = Movie ? MovieStructuredData(Movie as any) : undefined;
+  const breadcrumbStructuredData = BreadcrumbStructuredData(breadcrumbs);
+
   return (
-    <main className="min-h-screen grow overflow-hidden bg-[#191936] text-white">
+    <>
+      <SEOMeta
+        title={Movie?.title ?? "Movie"}
+        description={Movie?.overview ?? "Watch this movie on DeepMovies"}
+        canonical={`/movie/${movieId}`}
+        ogImage={Movie?.backdrop_path ? `https://image.tmdb.org/t/p/original${Movie.backdrop_path}` : undefined}
+        ogType="video.movie"
+        structuredData={[movieStructuredData, breadcrumbStructuredData].filter(Boolean)}
+      />
+      <main className="min-h-screen grow overflow-hidden bg-[#191936] text-white">
       {/* ============================================================
           THEATRE MODE PLAYER
       ============================================================ */}
@@ -411,7 +430,7 @@ const MoviePage = () => {
         </MediaSection>
       </div>
     </main>
-  );
+  </>);
 };
 
 export default MoviePage;

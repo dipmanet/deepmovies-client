@@ -3,30 +3,50 @@ import SearchCard from "#components/Cards/MovieCards/SearchCard";
 import { useSearchMulti } from "#lib/api";
 import { MovieListType } from "#lib/datatypes";
 import { useSearchParams } from "react-router-dom";
+import { SEOMeta, BreadcrumbStructuredData } from "#components/SEO";
 
 const SearchResultsPage = () => {
-	const [searchParams] = useSearchParams();
-	const searchText = searchParams?.get("query") ?? "";
-	const { data: searchData } = useSearchMulti({ query: searchText });
+  const [searchParams] = useSearchParams();
+  const searchText = searchParams?.get("query") ?? "";
+  const { data: searchData } = useSearchMulti({ query: searchText });
 
-	const { page, results, total_pages, total_results } = searchData || {};
+  const { page, results, total_pages, total_results } = searchData || {};
 
-	return (
-		<div className="container grow">
-			<div className="py-20 w-full flex flex-col gap-10">
-				<div className="text-accent-foreground">
-					<h4 className=" text-3xl font-bold ">
-						Search Results for <span className="text-primary">{searchText}</span>
-					</h4>
-				</div>
-				<div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10">
-					{results?.length > 0
-						? results.map((result: any) => <SearchCard data={result} className="w-[200px]" />)
-						: null}
-				</div>
-			</div>
-		</div>
-	);
+  const breadcrumbs = [
+    { name: "Home", url: "/" },
+    { name: "Search", url: "/search" },
+  ];
+
+  const breadcrumbStructuredData = BreadcrumbStructuredData(breadcrumbs);
+
+  return (
+    <>
+      <SEOMeta
+        title={`Search Results for "${searchText}"`}
+        description={`Search results for "${searchText}". Found ${total_results ?? 0} movies and TV series.`}
+        canonical={`/search/?query=${encodeURIComponent(searchText)}`}
+        noIndex={!searchText}
+        structuredData={breadcrumbStructuredData}
+      />
+      <div className="container grow">
+        <div className="py-20 w-full flex flex-col gap-10">
+          <div className="text-accent-foreground">
+            <h4 className=" text-3xl font-bold ">
+              Search Results for{" "}
+              <span className="text-primary">{searchText}</span>
+            </h4>
+          </div>
+          <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-10">
+            {results && results?.length > 0
+              ? results.map((result: any) => (
+                  <SearchCard data={result} className="w-[200px]" />
+                ))
+              : null}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default SearchResultsPage;

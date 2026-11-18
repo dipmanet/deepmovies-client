@@ -6,6 +6,7 @@ import {
   useState,
 } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
+import { SEOMeta, TVSeriesStructuredData, BreadcrumbStructuredData } from "#components/SEO";
 
 import {
   useFetchSeason,
@@ -338,8 +339,26 @@ const TVSeriesPage = () => {
 
   const playerSrc = `https://vidsrc.net/embed/tv?tmdb=${seriesId}&season=1&episode=1`;
 
+  const breadcrumbs = [
+    { name: "Home", url: "/" },
+    { name: "TV Series", url: "/series" },
+    { name: TVSeries?.name ?? "TV Series", url: `/series/${seriesId}` },
+  ];
+
+  const seriesStructuredData = TVSeries ? TVSeriesStructuredData(TVSeries as any) : undefined;
+  const breadcrumbStructuredData = BreadcrumbStructuredData(breadcrumbs);
+
   return (
-    <main className="min-h-screen grow overflow-hidden bg-[#191936] text-white">
+    <>
+      <SEOMeta
+        title={TVSeries?.name ?? "TV Series"}
+        description={TVSeries?.overview ?? "Watch this TV series on DeepMovies"}
+        canonical={`/series/${seriesId}`}
+        ogImage={TVSeries?.backdrop_path ? `https://image.tmdb.org/t/p/original${TVSeries.backdrop_path}` : undefined}
+        ogType="video.tv_show"
+        structuredData={[seriesStructuredData, breadcrumbStructuredData].filter(Boolean)}
+      />
+      <main className="min-h-screen grow overflow-hidden bg-[#191936] text-white">
       {/* ============================================================
           THEATRE MODE PLAYER
       ============================================================ */}
@@ -619,7 +638,7 @@ const TVSeriesPage = () => {
         )}
       </div>
     </main>
-  );
+  </>);
 };
 
 export default TVSeriesPage;
