@@ -12,6 +12,8 @@ import {
   AllTVSeriesPage,
   TVSeriesPage,
   EpisodePage,
+  PeoplePage,
+  PersonPage,
 } from "./routes";
 
 export const router = createBrowserRouter([
@@ -86,6 +88,21 @@ export const router = createBrowserRouter([
           {
             path: ":genre",
             element: <GenrePage />,
+          },
+        ],
+      },
+      {
+        path: "people",
+        element: <Outlet />,
+        children: [
+          {
+            path: "",
+            element: <PeoplePage />,
+            index: true,
+          },
+          {
+            path: ":id",
+            element: <PersonPage />,
           },
         ],
       },

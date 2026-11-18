@@ -6,6 +6,9 @@ import {
   GenreType,
   MovieListType,
   MovieType,
+  PersonListType,
+  PersonMovieCredit,
+  PersonType,
   ResponseType,
   ReviewType,
   SeasonType,
@@ -213,4 +216,32 @@ export const useFetchTVSeriesByFilter = (
     queryKey: [queries.fetch_tv_series_by_filter, params],
     queryFn: () => requests.get(`/3/discover/tv`, { ...params }),
     // enabled: Object.keys(params)?.length > 0,
+  });
+
+// People
+export const useFetchPerson = ({ id }: { id?: number }) =>
+  useQuery<PersonType>({
+    queryKey: [queries.fetch_person, id],
+    queryFn: () => requests.get(`/3/person/${id}`),
+    enabled: !!id,
+  });
+
+export const useFetchPersonMovieCredits = ({ id }: { id?: number }) =>
+  useQuery<{ cast: PersonMovieCredit[]; crew: PersonMovieCredit[] }>({
+    queryKey: [queries.fetch_person_movie_credits, id],
+    queryFn: () => requests.get(`/3/person/${id}/movie_credits`),
+    enabled: !!id,
+  });
+
+export const useFetchPersonTVCredits = ({ id }: { id?: number }) =>
+  useQuery<{ cast: PersonMovieCredit[]; crew: PersonMovieCredit[] }>({
+    queryKey: [queries.fetch_person_tv_credits, id],
+    queryFn: () => requests.get(`/3/person/${id}/tv_credits`),
+    enabled: !!id,
+  });
+
+export const useFetchPopularPeople = (params?: object) =>
+  useQuery<ResponseType<PersonListType>>({
+    queryKey: [queries.fetch_popular_people],
+    queryFn: () => requests.get("/3/person/popular", { ...params }),
   });

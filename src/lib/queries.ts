@@ -32,4 +32,10 @@ export const queries = {
 
   fetch_movies_by_filter: "fetch_movies_by_filter",
   fetch_tv_series_by_filter: "fetch_tv_series_by_filter",
+
+  // People
+  fetch_person: "fetch_person",
+  fetch_person_movie_credits: "fetch_person_movie_credits",
+  fetch_person_tv_credits: "fetch_person_tv_credits",
+  fetch_popular_people: "fetch_popular_people",
 };

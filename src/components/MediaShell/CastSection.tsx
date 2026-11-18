@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { imageUrl } from "./imageUrl";
 import SectionHeading from "./SectionHeading";
 import Slider from "./Slider";
@@ -17,10 +18,7 @@ const CastSection = ({
 
   const items = isLoading
     ? Array.from({ length: 10 }).map((_, i) => (
-        <div
-          key={i}
-          className="w-28 shrink-0 animate-pulse snap-start sm:w-32"
-        >
+        <div key={i} className="w-28 shrink-0 animate-pulse snap-start sm:w-32">
           <div className="aspect-[3/4] rounded-xl bg-white/10" />
           <div className="mt-3 h-3 w-4/5 rounded bg-white/10" />
           <div className="mt-2 h-2 w-3/5 rounded bg-white/5" />
@@ -30,16 +28,24 @@ const CastSection = ({
         const profile = imageUrl(person.profile_path, "w342");
 
         return (
-          <div key={person.id} className="group w-28 shrink-0 snap-start sm:w-32">
+          <div
+            key={person.id}
+            className="group w-28 shrink-0 snap-start sm:w-32"
+          >
             <div className="relative aspect-[3/4] overflow-hidden rounded-xl bg-white/5 ring-1 ring-white/10 transition group-hover:ring-primary/60">
               {profile ? (
-                <img
-                  src={profile}
-                  alt={person.name}
-                  loading="lazy"
-                  draggable={false}
-                  className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                />
+                <Link
+                  to={`/people/${person.id}`}
+                  className="absolute inset-0 z-10"
+                >
+                  <img
+                    src={profile}
+                    alt={person.name}
+                    loading="lazy"
+                    draggable={false}
+                    className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                  />
+                </Link>
               ) : (
                 <div className="flex h-full w-full items-center justify-center text-2xl font-bold text-white/30">
                   {person.name?.charAt(0) ?? "?"}

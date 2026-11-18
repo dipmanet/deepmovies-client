@@ -23,6 +23,50 @@ export interface PersonListType {
   profile_path: string;
 }
 
+export interface PersonType {
+  adult: boolean;
+  also_known_as: string[];
+  biography: string;
+  birthday: string;
+  deathday: string | null;
+  gender: number;
+  homepage: string;
+  id: number;
+  imdb_id: string;
+  known_for_department: string;
+  name: string;
+  place_of_birth: string;
+  popularity: number;
+  profile_path: string;
+  combined_credits?: {
+    cast: PersonMovieCredit[];
+    crew: PersonMovieCredit[];
+  };
+}
+export interface PersonMovieCredit {
+  id: number;
+  credit_id: string;
+  media_type: "movie" | "tv";
+  title?: string;
+  name?: string;
+  original_title?: string;
+  original_name?: string;
+  poster_path: string;
+  backdrop_path: string;
+  release_date?: string;
+  first_air_date?: string;
+  vote_average: number;
+  vote_count: number;
+  character?: string;
+  job?: string;
+  department?: string;
+  episode_count?: number;
+  genre_ids: number[];
+  overview: string;
+  popularity: number;
+  adult: boolean;
+}
+
 export interface ReviewType {
   author: string;
   author_details: {

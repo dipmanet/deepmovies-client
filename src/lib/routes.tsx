@@ -14,3 +14,5 @@ export const EpisodePage = React.lazy(() => import("#pages/TVSeries/Episode"));
 export const GenresPage = React.lazy(() => import("#pages/Genres"));
 export const GenrePage = React.lazy(() => import("#pages/Genres/Genre"));
 export const SearchResultsPage = React.lazy(() => import("#pages/SearchResults"));
+export const PeoplePage = React.lazy(() => import("#pages/People"));
+export const PersonPage = React.lazy(() => import("#pages/People/Person"));

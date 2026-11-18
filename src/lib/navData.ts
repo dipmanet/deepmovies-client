@@ -20,6 +20,12 @@ export const navData: NavDataItem[] = [
   },
   {
     id: 3,
+    title: "People",
+    link: "/people",
+    isExternal: false,
+  },
+  {
+    id: 4,
     title: "Genres",
     link: "/genre",
     isExternal: false,

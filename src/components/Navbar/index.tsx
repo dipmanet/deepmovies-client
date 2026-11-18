@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import { navData } from "src/lib/navData";
+import { navData, NavDataItem } from "src/lib/navData";
 import { RiVideoOnAiFill } from "react-icons/ri";
-import { FaHeartBroken } from "react-icons/fa";
-import { IoIosNotifications } from "react-icons/io";
 import { buttonVariants } from "#components/ui/button";
 import { Link, useLocation } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
@@ -60,7 +58,7 @@ const Navbar = ({ className = "" }: { className?: string }) => {
                 <div className="absolute top-[100%] left-0 h-[30vh] z-[100] overflow-hidden overflow-y-auto no-scrollbar bg-secondary transition-transform ease-out duration-1000">
                   <ul className="py-1 flex flex-col">
                     {nav?.children && nav.children?.length > 0
-                      ? nav.children?.map((childNav: any) => (
+                      ? nav.children?.map((childNav: NavDataItem) => (
                           <li key={childNav.id}>
                             <a
                               role="button"

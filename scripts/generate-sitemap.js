@@ -9,6 +9,7 @@ const staticRoutes = [
   { path: "/series", changefreq: "daily", priority: 0.9 },
   { path: "/genre", changefreq: "weekly", priority: 0.8 },
   { path: "/search", changefreq: "weekly", priority: 0.5 },
+  { path: "/people", changefreq: "daily", priority: 0.9 },
 ];
 
 const movieCategories = [
@@ -70,7 +71,15 @@ function generateSitemap() {
     });
   }
 
-  // Note: Dynamic routes like /movie/:id, /series/:id, /genre/:name
+  // People pages
+  urls.push({
+    url: `${SITE_URL}/people`,
+    lastmod: new Date().toISOString().split("T")[0],
+    changefreq: "daily",
+    priority: 0.9,
+  });
+
+  // Note: Dynamic routes like /movie/:id, /series/:id, /genre/:name, /people/:id
   // need to be generated from your API data. You can extend this script
   // to fetch from TMDB API and generate those URLs.
 
