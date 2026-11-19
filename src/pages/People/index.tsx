@@ -1,31 +1,96 @@
+import { CoverMovieCard2 } from "#components/Cards/MovieCards";
 import SklCoverMovieCard from "#components/Cards/Skeletons/SklCoverMovieCard";
 import {
-  useFetchPopularPeople,
+  useFetchNowPlayingMovies,
+  useFetchPopularMovies,
+  useFetchTopRatedMovies,
+  useFetchUpcomingMovies,
 } from "#lib/api";
-import { PersonListType } from "#lib/datatypes";
-import { cn, getImageUrl } from "#lib/utils";
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { MovieListType } from "#lib/datatypes";
+import { cn } from "#lib/utils";
+import { useMemo, useState } from "react";
+import {
+  HiOutlineClock,
+  HiOutlineFire,
+  HiOutlineStar,
+  HiOutlineTrendingUp,
+} from "react-icons/hi";
 import { SEOMeta, BreadcrumbStructuredData } from "#components/SEO";
 
-const PeoplePage = () => {
-  const { data: peopleData, isLoading } = useFetchPopularPeople();
+const MOVIE_CATEGORIES = [
+  {
+    id: "popular",
+    title: "Popular",
+    icon: HiOutlineFire,
+    useFetch: useFetchPopularMovies,
+  },
+  {
+    id: "top-rated",
+    title: "Top Rated",
+    icon: HiOutlineStar,
+    useFetch: useFetchTopRatedMovies,
+  },
+  {
+    id: "upcoming",
+    title: "Upcoming",
+    icon: HiOutlineTrendingUp,
+    useFetch: useFetchUpcomingMovies,
+  },
+  {
+    id: "now-playing",
+    title: "Now Playing",
+    icon: HiOutlineClock,
+    useFetch: useFetchNowPlayingMovies,
+  },
+] as const;
 
-  const { results: people } = peopleData || {};
+type CategoryId = (typeof MOVIE_CATEGORIES)[number]["id"];
+
+const MoviesPage = () => {
+  const [activeCategory, setActiveCategory] = useState<CategoryId>("popular");
+
+  const selectedCategory = useMemo(
+    () =>
+      MOVIE_CATEGORIES.find((cat) => cat.id === activeCategory) ??
+      MOVIE_CATEGORIES[0],
+    [activeCategory],
+  );
+
+  const { data: moviesData, isLoading } = selectedCategory.useFetch();
+
+  const { results: movies } = moviesData || {};
 
   const breadcrumbs = [
     { name: "Home", url: "/" },
-    { name: "People", url: "/people" },
+    { name: "Movies", url: "/movie" },
   ];
 
   const breadcrumbStructuredData = BreadcrumbStructuredData(breadcrumbs);
 
+  const categoryTitles: Record<CategoryId, string> = {
+    popular: "Popular Movies",
+    "top-rated": "Top Rated Movies",
+    upcoming: "Upcoming Movies",
+    "now-playing": "Now Playing Movies",
+  };
+
+  const categoryDescriptions: Record<CategoryId, string> = {
+    popular:
+      "Discover the most popular movies right now. Trending films everyone is talking about.",
+    "top-rated":
+      "Explore the highest-rated movies of all time. Critically acclaimed films you must watch.",
+    upcoming:
+      "Check out upcoming movies and future releases. Plan your watchlist in advance.",
+    "now-playing":
+      "See what movies are currently playing in theaters. Don't miss the latest releases.",
+  };
+
   return (
     <>
       <SEOMeta
-        title="Popular People"
-        description="Discover popular actors, directors, and creators. Browse their filmographies and latest works."
-        canonical="/people"
+        title={categoryTitles[activeCategory]}
+        description={categoryDescriptions[activeCategory]}
+        canonical="/movie"
         structuredData={breadcrumbStructuredData}
       />
       <div className="container grow">
@@ -34,27 +99,49 @@ const PeoplePage = () => {
             <div className="flex items-center gap-3">
               <div className="h-[28px] w-1 rounded-full bg-primary" />
               <h1 className="text-[22px] sm:text-[26px] font-heading text-accent-foreground tracking-wide">
-                Popular People
+                Movies
               </h1>
+            </div>
+
+            <div className="flex items-center gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/[0.06]">
+              {MOVIE_CATEGORIES.map((category) => {
+                const Icon = category.icon;
+                return (
+                  <button
+                    key={category.id}
+                    className={cn(
+                      "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-[13px] font-medium",
+                      "transition-all duration-200 ease-in-out",
+                      category.id === activeCategory
+                        ? "bg-primary text-white shadow-sm"
+                        : "text-muted-foreground hover:text-foreground hover:bg-white/[0.06]",
+                    )}
+                    onClick={() => setActiveCategory(category.id)}
+                  >
+                    <Icon className="text-[13px]" />
+                    <span>{category.title}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
           <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-            {isLoading
-              ? Array(10)
-                  .fill("")
-                  .map((_, idx) => <SklCoverMovieCard key={idx} />)
-              : people && people.length > 0
-              ? people.map((person: PersonListType) => (
-                  <PersonCard key={person.id} person={person} />
-                ))
-              : (
-                  <div className="col-span-full flex items-center justify-center py-20">
-                    <p className="text-muted-foreground text-base">
-                      No popular people found.
-                    </p>
-                  </div>
-                )}
+            {isLoading ? (
+              Array(10)
+                .fill("")
+                .map((_, idx) => <SklCoverMovieCard key={idx} />)
+            ) : movies && movies.length > 0 ? (
+              movies.map((mov: MovieListType) => (
+                <CoverMovieCard2 key={mov.id} movie={mov} showDetails />
+              ))
+            ) : (
+              <div className="col-span-full flex items-center justify-center py-20">
+                <p className="text-muted-foreground text-base">
+                  No {selectedCategory.title.toLowerCase()} movies found.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -62,51 +149,4 @@ const PeoplePage = () => {
   );
 };
 
-const PersonCard = ({ person }: { person: PersonListType }) => {
-  const profileUrl = getImageUrl(person.profile_path, "w342");
-  const knownFor = person.known_for_department;
-
-  return (
-    <Link
-      to={`/people/${person.id}`}
-      className="group relative block min-w-[50px] rounded-xl"
-    >
-      <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xl">
-        <img
-          src={profileUrl}
-          alt={person.name}
-          loading="lazy"
-          className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100" />
-        <div className="absolute inset-x-0 top-0 -translate-y-full p-2.5 transition-transform duration-300 ease-in-out group-hover:translate-y-0 sm:p-3">
-          <div className="flex items-center justify-between gap-1.5">
-            {knownFor && (
-              <span className="rounded-full bg-white/20 px-2.5 py-1 text-[11px] uppercase tracking-wide text-white backdrop-blur-sm">
-                {knownFor}
-              </span>
-            )}
-            <div className="flex items-center gap-1.5 text-[11px] text-yellow-400">
-              <svg className="h-3 w-3 fill-yellow-400" viewBox="0 0 20 20">
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
-              <span>{person.popularity?.toFixed(1) ?? "N/A"}</span>
-            </div>
-          </div>
-        </div>
-        <div className="absolute inset-x-0 bottom-0 translate-y-full p-2.5 transition-transform duration-300 ease-in-out group-hover:translate-y-0 sm:p-3">
-          {person.name && (
-            <p className="text-[12px] font-semibold text-white line-clamp-1">
-              {person.name}
-            </p>
-          )}
-          <div className="mt-1 flex items-center gap-1.5 text-[11px] text-gray-300">
-            {knownFor && <span className="capitalize">{knownFor}</span>}
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-};
-
-export default PeoplePage;
+export default MoviesPage;

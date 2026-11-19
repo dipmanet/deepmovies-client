@@ -6,7 +6,7 @@ interface SEOMetaProps {
   description?: string;
   canonical?: string;
   ogImage?: string;
-  ogType?: "website" | "article" | "video.movie" | "video.tv_show";
+  ogType?: "website" | "article" | "video.movie" | "video.tv_show" | "video.episode";
   twitterCard?: "summary" | "summary_large_image";
   noIndex?: boolean;
   noFollow?: boolean;

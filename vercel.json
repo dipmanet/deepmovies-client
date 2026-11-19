@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/((?!.*\\..{1,4}$).*)",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -85,7 +85,9 @@ const PersonPage = () => {
 
   const age = Person?.birthday
     ? Math.floor(
-        (deathday ? new Date(Person.deathday).getTime() : Date.now()) -
+        (deathday && Person.deathday
+          ? new Date(Person.deathday).getTime()
+          : Date.now()) -
           new Date(Person.birthday).getTime()
       ) / (1000 * 60 * 60 * 24 * 365.25)
     : null;
@@ -121,7 +123,7 @@ const PersonPage = () => {
         description={Person?.biography ? Person.biography.slice(0, 160) : "View filmography and biography"}
         canonical={`/people/${personId}`}
         ogImage={Person?.profile_path ? `https://image.tmdb.org/t/p/original${Person.profile_path}` : undefined}
-        ogType="profile"
+        ogType="article"
         structuredData={[personStructuredData, breadcrumbStructuredData].filter(Boolean)}
       />
       <main className="min-h-screen grow overflow-hidden bg-[#191936] text-white">

@@ -8,6 +8,7 @@ import { cn } from "#lib/utils";
 import { UseQueryResult } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { IoArrowForward } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 type Props = {
   title: string;
@@ -24,7 +25,31 @@ type Props = {
     | null;
 };
 
-const CoverCategory = ({ title, useGetMovies, useGetTVSeries }: Props) => {
+/* Maps a home-section category to the matching tab id on the target page. */
+const MOVIE_LINKS: Record<movieCategory, string> = {
+  trending: "trending",
+  trending_this_week: "trending",
+  now_playing: "now-playing",
+  top_rated: "top-rated",
+  popular: "popular",
+  upcoming: "upcoming",
+};
+
+const TV_LINKS: Record<tvCategory, string> = {
+  trending: "trending",
+  trending_this_week: "trending",
+  airing_today: "airing-today",
+  airing_this_week: "airing-this-week",
+  popular: "popular",
+  upcoming: "popular",
+};
+
+const CoverCategory = ({
+  title,
+  category,
+  useGetMovies,
+  useGetTVSeries,
+}: Props) => {
   const { data: dataMovies, isLoading: isLoadingM } = useGetMovies?.() ?? {
     data: undefined,
     isLoading: false,
@@ -36,20 +61,27 @@ const CoverCategory = ({ title, useGetMovies, useGetTVSeries }: Props) => {
   const { results: Movies } = dataMovies || {};
   const { results: TVSeries } = dataTVSeries || {};
 
-  const [currentTab, setCurrentTab] = useState(1);
+  const [selectedTab, setSelectedTab] = useState<1 | 2>(1);
 
-  const items = useMemo(() => {
-    if (useGetMovies === null && useGetTVSeries === null) return [];
-    if (useGetMovies === null) {
-      setCurrentTab(2);
-      return TVSeries;
-    }
-    if (useGetTVSeries === null) {
-      setCurrentTab(1);
-      return Movies;
-    }
-    return currentTab === 1 ? Movies : TVSeries;
-  }, [Movies, TVSeries, currentTab, useGetMovies, useGetTVSeries]);
+  const hasMovies = useGetMovies !== null;
+  const hasSeries = useGetTVSeries !== null;
+  const currentTab: 1 | 2 = !hasMovies ? 2 : !hasSeries ? 1 : selectedTab;
+
+  const items = useMemo(
+    () => (currentTab === 1 ? Movies : TVSeries),
+    [Movies, TVSeries, currentTab],
+  );
+
+  const targetIsSeries = currentTab === 2;
+
+  const showAllHref = (() => {
+    const base = targetIsSeries ? "/series" : "/movie";
+    if (!category) return base;
+    const id = targetIsSeries
+      ? TV_LINKS[category as tvCategory]
+      : MOVIE_LINKS[category as movieCategory];
+    return id ? `${base}?category=${id}` : base;
+  })();
 
   return (
     <div className="container py-12 flex flex-col gap-8">
@@ -80,7 +112,7 @@ const CoverCategory = ({ title, useGetMovies, useGetTVSeries }: Props) => {
                         ? "bg-primary text-white shadow-sm"
                         : "text-muted-foreground hover:text-foreground hover:bg-white/[0.06]",
                     )}
-                    onClick={() => setCurrentTab(tab.id)}
+                    onClick={() => setSelectedTab(tab.id === 2 ? 2 : 1)}
                   >
                     <tab.icon className="text-[13px]" />
                     <span>{tab.title}</span>
@@ -90,10 +122,13 @@ const CoverCategory = ({ title, useGetMovies, useGetTVSeries }: Props) => {
             </div>
           )}
 
-          <button className="flex items-center gap-1 text-[13px] font-medium text-muted-foreground hover:text-primary transition-colors duration-200 group">
+          <Link
+            to={showAllHref}
+            className="flex items-center gap-1 text-[13px] font-medium text-muted-foreground hover:text-primary transition-colors duration-200 group"
+          >
             <span>Show All</span>
             <IoArrowForward className="text-[14px] transition-transform duration-200 group-hover:translate-x-0.5" />
-          </button>
+          </Link>
         </div>
       </div>
 

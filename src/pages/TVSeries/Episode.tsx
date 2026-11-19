@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 
+import { BreadcrumbStructuredData, SEOMeta } from "#components/SEO";
 import { useFetchEpisode, useFetchTVSeries, useFetchSeason } from "#lib/api";
 import { EpisodeListType } from "#lib/datatypes";
 import { getDateString } from "#lib/utils";
@@ -103,11 +104,11 @@ const EpisodePage = () => {
     };
   }, [isPlayerOpen]);
 
-  // Reset player when navigating to another series
+  // Reset player when navigating to another episode
   useEffect(() => {
     setIsPlayerOpen(false);
     window.scrollTo({ top: 0 });
-  }, [seriesId]);
+  }, [seriesId, seasonNumber, episodeNumber]);
 
   if (!Series || !Episode) return null;
 
@@ -122,8 +123,36 @@ const EpisodePage = () => {
   const otherEpisodes =
     Season?.episodes?.filter((ep) => ep.id !== Episode.id) ?? [];
 
+  const breadcrumbs = [
+    { name: "Home", url: "/" },
+    { name: "TV Series", url: "/series" },
+    { name: Series.name, url: `/series/${seriesId}` },
+    {
+      name: `S${Episode.season_number}E${Episode.episode_number} ${Episode.name}`,
+      url: `/series/${seriesId}/${Episode.season_number}/${Episode.episode_number}`,
+    },
+  ];
+
+  const breadcrumbStructuredData = BreadcrumbStructuredData(breadcrumbs);
+
   return (
-    <main className="min-h-screen grow overflow-hidden bg-[#191936] text-white">
+    <>
+      <SEOMeta
+        title={`${Episode.name} – ${Series.name} S${Episode.season_number}E${Episode.episode_number}`}
+        description={
+          Episode.overview ??
+          `Watch ${Episode.name} from ${Series.name} on DeepMovies`
+        }
+        canonical={`/series/${seriesId}/${Episode.season_number}/${Episode.episode_number}`}
+        ogImage={
+          Episode.still_path
+            ? `https://image.tmdb.org/t/p/original${Episode.still_path}`
+            : undefined
+        }
+        ogType="video.episode"
+        structuredData={breadcrumbStructuredData}
+      />
+      <main className="min-h-screen grow overflow-hidden bg-[#191936] text-white">
       {/* ============================================================
           THEATRE MODE PLAYER
       ============================================================ */}
@@ -349,6 +378,7 @@ const EpisodePage = () => {
         )}
       </div>
     </main>
+    </>
   );
 };
 

@@ -10,27 +10,33 @@ import SearchInput from "#components/SearchInput";
 const Navbar = ({ className = "" }: { className?: string }) => {
   const { pathname } = useLocation();
 
-  const [currentNav, setCurrentNav] = useState(0);
+const [currentNav, setCurrentNav] = useState(0);
   const [showNavbar, setShowNavbar] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
 
   const pagePath = pathname.split("/")[1];
 
+  const onHome = pathname === "/";
+
   useEffect(() => {
-    if (window === undefined || !window) {
-      setShowHeader(true);
-    }
-    if (pathname === "/") setShowHeader(false);
     const handleScroll = () => {
       const scrollTop = document.documentElement.scrollTop;
-      if (pathname === "/") {
-        if (scrollTop > 100) {
-          setShowHeader(true);
-        } else setShowHeader(false);
+      if (onHome) {
+        setShowHeader(scrollTop > 100);
+      } else {
+        setShowHeader(true);
       }
     };
-    return () => document.addEventListener("scroll", handleScroll);
-  }, []);
+
+    if (onHome) {
+      setShowHeader(document.documentElement.scrollTop > 100);
+    } else {
+      setShowHeader(true);
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [onHome]);
 
   const NavList = () => (
     <div className="transition duration-300">

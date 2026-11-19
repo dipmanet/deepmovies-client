@@ -1,24 +1,32 @@
-import { CoverMovieCard2 } from "#components/Cards/MovieCards";
 import SklCoverMovieCard from "#components/Cards/Skeletons/SklCoverMovieCard";
 import CoverTVSeriesCard from "#components/Cards/TVSeriesCards/CoverTVSeriesCard";
+import { BreadcrumbStructuredData, SEOMeta } from "#components/SEO";
 import {
+  useFetchAiringThisWeekTVSeries,
+  useFetchAiringTodayTVSeries,
   useFetchPopularTVSeries,
   useFetchTopRatedTVSeries,
-  useFetchAiringTodayTVSeries,
-  useFetchAiringThisWeekTVSeries,
+  useFetchTrendingTodayTVSeries,
 } from "#lib/api";
-import { MovieListType, TVSeriesListType, TVSeriesType } from "#lib/datatypes";
+import { TVSeriesListType } from "#lib/datatypes";
 import { cn } from "#lib/utils";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import {
+  HiOutlineCalendar,
   HiOutlineClock,
   HiOutlineFire,
   HiOutlineStar,
   HiOutlineTrendingUp,
 } from "react-icons/hi";
-import { SEOMeta, BreadcrumbStructuredData } from "#components/SEO";
+import { useSearchParams } from "react-router-dom";
 
 const TVSERIES_CATEGORIES = [
+  {
+    id: "trending",
+    title: "Trending",
+    icon: HiOutlineTrendingUp,
+    useFetch: useFetchTrendingTodayTVSeries,
+  },
   {
     id: "popular",
     title: "Popular",
@@ -35,20 +43,48 @@ const TVSERIES_CATEGORIES = [
     id: "airing-today",
     title: "Airing Today",
     icon: HiOutlineClock,
-    useFetch: useFetchAiringThisWeekTVSeries,
+    useFetch: useFetchAiringTodayTVSeries,
   },
   {
     id: "airing-this-week",
     title: "Airing This Week",
-    icon: HiOutlineTrendingUp,
-    useFetch: useFetchAiringTodayTVSeries,
+    icon: HiOutlineCalendar,
+    useFetch: useFetchAiringThisWeekTVSeries,
   },
 ] as const;
 
 type CategoryId = (typeof TVSERIES_CATEGORIES)[number]["id"];
 
+const DEFAULT_CATEGORY: CategoryId = "popular";
+
+/* Normalises a raw URL value (e.g. `airing_this_week`) to a tab id. */
+const resolveCategory = (raw: string | null): CategoryId => {
+  if (!raw) return DEFAULT_CATEGORY;
+  const normalised = raw.replace(/_/g, "-");
+  if (normalised.startsWith("trending")) return "trending";
+  const match = TVSERIES_CATEGORIES.find((cat) => cat.id === normalised);
+  return match?.id ?? DEFAULT_CATEGORY;
+};
+
+const categoryTitles: Record<CategoryId, string> = {
+  trending: "Trending TV Series",
+  popular: "Popular TV Series",
+  "top-rated": "Top Rated TV Series",
+  "airing-today": "TV Series Airing Today",
+  "airing-this-week": "TV Series Airing This Week",
+};
+
+const categoryDescriptions: Record<CategoryId, string> = {
+  trending: "Discover the TV series trending today. The shows everyone is talking about right now.",
+  popular: "Discover the most popular TV series right now. Trending shows everyone is watching.",
+  "top-rated": "Explore the highest-rated TV series of all time. Critically acclaimed shows you must watch.",
+  "airing-today": "See what TV series are airing new episodes today. Stay up to date with your favorite shows.",
+  "airing-this-week": "Check out TV series airing new episodes this week. Never miss an episode.",
+};
+
 const TVSeriesPage = () => {
-  const [activeCategory, setActiveCategory] = useState<CategoryId>("popular");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeCategory = resolveCategory(searchParams.get("category"));
 
   const selectedCategory = useMemo(
     () =>
@@ -68,20 +104,6 @@ const TVSeriesPage = () => {
 
   const breadcrumbStructuredData = BreadcrumbStructuredData(breadcrumbs);
 
-  const categoryTitles: Record<CategoryId, string> = {
-    popular: "Popular TV Series",
-    "top-rated": "Top Rated TV Series",
-    "airing-today": "TV Series Airing Today",
-    "airing-this-week": "TV Series Airing This Week",
-  };
-
-  const categoryDescriptions: Record<CategoryId, string> = {
-    popular: "Discover the most popular TV series right now. Trending shows everyone is watching.",
-    "top-rated": "Explore the highest-rated TV series of all time. Critically acclaimed shows you must watch.",
-    "airing-today": "See what TV series are airing new episodes today. Stay up to date with your favorite shows.",
-    "airing-this-week": "Check out TV series airing new episodes this week. Never miss an episode.",
-  };
-
   return (
     <>
       <SEOMeta
@@ -100,7 +122,7 @@ const TVSeriesPage = () => {
               </h1>
             </div>
 
-            <div className="flex items-center gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/[0.06]">
+            <div className="flex flex-wrap items-center gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/[0.06]">
               {TVSERIES_CATEGORIES.map((category) => {
                 const Icon = category.icon;
                 return (
@@ -113,7 +135,7 @@ const TVSeriesPage = () => {
                         ? "bg-primary text-white shadow-sm"
                         : "text-muted-foreground hover:text-foreground hover:bg-white/[0.06]",
                     )}
-                    onClick={() => setActiveCategory(category.id)}
+                    onClick={() => setSearchParams({ category: category.id })}
                   >
                     <Icon className="text-[13px]" />
                     <span>{category.title}</span>
@@ -135,7 +157,7 @@ const TVSeriesPage = () => {
             ) : (
               <div className="col-span-full flex items-center justify-center py-20">
                 <p className="text-muted-foreground text-base">
-                  No {selectedCategory.title.toLowerCase()} Series found.
+                  No {selectedCategory.title.toLowerCase()} series found.
                 </p>
               </div>
             )}

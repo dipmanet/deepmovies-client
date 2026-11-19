@@ -1,18 +1,32 @@
 import { CoverMovieCard2 } from "#components/Cards/MovieCards";
 import SklCoverMovieCard from "#components/Cards/Skeletons/SklCoverMovieCard";
+import { BreadcrumbStructuredData, SEOMeta } from "#components/SEO";
 import {
   useFetchNowPlayingMovies,
   useFetchPopularMovies,
   useFetchTopRatedMovies,
+  useFetchTrendingTodayMovies,
   useFetchUpcomingMovies,
 } from "#lib/api";
 import { MovieListType } from "#lib/datatypes";
 import { cn } from "#lib/utils";
-import { useMemo, useState } from "react";
-import { HiOutlineClock, HiOutlineFire, HiOutlineStar, HiOutlineTrendingUp } from "react-icons/hi";
-import { SEOMeta, BreadcrumbStructuredData } from "#components/SEO";
+import { useMemo } from "react";
+import {
+  HiOutlineCalendar,
+  HiOutlineClock,
+  HiOutlineFire,
+  HiOutlineStar,
+  HiOutlineTrendingUp,
+} from "react-icons/hi";
+import { useSearchParams } from "react-router-dom";
 
 const MOVIE_CATEGORIES = [
+  {
+    id: "trending",
+    title: "Trending",
+    icon: HiOutlineTrendingUp,
+    useFetch: useFetchTrendingTodayMovies,
+  },
   {
     id: "popular",
     title: "Popular",
@@ -28,7 +42,7 @@ const MOVIE_CATEGORIES = [
   {
     id: "upcoming",
     title: "Upcoming",
-    icon: HiOutlineTrendingUp,
+    icon: HiOutlineCalendar,
     useFetch: useFetchUpcomingMovies,
   },
   {
@@ -41,14 +55,41 @@ const MOVIE_CATEGORIES = [
 
 type CategoryId = (typeof MOVIE_CATEGORIES)[number]["id"];
 
+const DEFAULT_CATEGORY: CategoryId = "popular";
+
+/* Normalises a raw URL value (e.g. `trending_this_week`) to a tab id. */
+const resolveCategory = (raw: string | null): CategoryId => {
+  if (!raw) return DEFAULT_CATEGORY;
+  const normalised = raw.replace(/_/g, "-");
+  if (normalised.startsWith("trending")) return "trending";
+  const match = MOVIE_CATEGORIES.find((cat) => cat.id === normalised);
+  return match?.id ?? DEFAULT_CATEGORY;
+};
+
+const categoryTitles: Record<CategoryId, string> = {
+  trending: "Trending Movies",
+  popular: "Popular Movies",
+  "top-rated": "Top Rated Movies",
+  upcoming: "Upcoming Movies",
+  "now-playing": "Now Playing Movies",
+};
+
+const categoryDescriptions: Record<CategoryId, string> = {
+  trending: "Discover the movies trending today. The films everyone is talking about right now.",
+  popular: "Discover the most popular movies right now. Trending films everyone is talking about.",
+  "top-rated": "Explore the highest-rated movies of all time. Critically acclaimed films you must watch.",
+  upcoming: "Check out upcoming movies and future releases. Plan your watchlist in advance.",
+  "now-playing": "See what movies are currently playing in theaters. Don't miss the latest releases.",
+};
+
 const MoviesPage = () => {
-  const [activeCategory, setActiveCategory] = useState<CategoryId>("popular");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeCategory = resolveCategory(searchParams.get("category"));
 
   const selectedCategory = useMemo(
     () =>
-      MOVIE_CATEGORIES.find(
-        (cat) => cat.id === activeCategory,
-      ) ?? MOVIE_CATEGORIES[0],
+      MOVIE_CATEGORIES.find((cat) => cat.id === activeCategory) ??
+      MOVIE_CATEGORIES[0],
     [activeCategory],
   );
 
@@ -62,20 +103,6 @@ const MoviesPage = () => {
   ];
 
   const breadcrumbStructuredData = BreadcrumbStructuredData(breadcrumbs);
-
-  const categoryTitles: Record<CategoryId, string> = {
-    popular: "Popular Movies",
-    "top-rated": "Top Rated Movies",
-    upcoming: "Upcoming Movies",
-    "now-playing": "Now Playing Movies",
-  };
-
-  const categoryDescriptions: Record<CategoryId, string> = {
-    popular: "Discover the most popular movies right now. Trending films everyone is talking about.",
-    "top-rated": "Explore the highest-rated movies of all time. Critically acclaimed films you must watch.",
-    upcoming: "Check out upcoming movies and future releases. Plan your watchlist in advance.",
-    "now-playing": "See what movies are currently playing in theaters. Don't miss the latest releases.",
-  };
 
   return (
     <>
@@ -95,7 +122,7 @@ const MoviesPage = () => {
               </h1>
             </div>
 
-            <div className="flex items-center gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/[0.06]">
+            <div className="flex flex-wrap items-center gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/[0.06]">
               {MOVIE_CATEGORIES.map((category) => {
                 const Icon = category.icon;
                 return (
@@ -108,7 +135,7 @@ const MoviesPage = () => {
                         ? "bg-primary text-white shadow-sm"
                         : "text-muted-foreground hover:text-foreground hover:bg-white/[0.06]",
                     )}
-                    onClick={() => setActiveCategory(category.id)}
+                    onClick={() => setSearchParams({ category: category.id })}
                   >
                     <Icon className="text-[13px]" />
                     <span>{category.title}</span>
@@ -119,25 +146,21 @@ const MoviesPage = () => {
           </div>
 
           <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
-            {isLoading
-              ? Array(10)
-                  .fill("")
-                  .map((_, idx) => <SklCoverMovieCard key={idx} />)
-              : movies && movies.length > 0
-              ? movies.map((mov: MovieListType) => (
-                  <CoverMovieCard2
-                    key={mov.id}
-                    movie={mov}
-                    showDetails
-                  />
-                ))
-              : (
-                  <div className="col-span-full flex items-center justify-center py-20">
-                    <p className="text-muted-foreground text-base">
-                      No {selectedCategory.title.toLowerCase()} movies found.
-                    </p>
-                  </div>
-                )}
+            {isLoading ? (
+              Array(10)
+                .fill("")
+                .map((_, idx) => <SklCoverMovieCard key={idx} />)
+            ) : movies && movies.length > 0 ? (
+              movies.map((mov: MovieListType) => (
+                <CoverMovieCard2 key={mov.id} movie={mov} showDetails />
+              ))
+            ) : (
+              <div className="col-span-full flex items-center justify-center py-20">
+                <p className="text-muted-foreground text-base">
+                  No {selectedCategory.title.toLowerCase()} movies found.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
