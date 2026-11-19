@@ -14,6 +14,15 @@ export interface GenreType {
   name: string;
 }
 
+/* ------------------------------------------------------------------ */
+/* Multi search results                                                */
+/* ------------------------------------------------------------------ */
+
+export type SearchResultType =
+  | (MovieListType & { media_type: "movie" })
+  | (TVSeriesListType & { media_type: "tv" })
+  | (PersonListType & { media_type: "person" });
+
 export interface PersonListType {
   credit_id: string;
   gender: number;

@@ -1,6 +1,7 @@
 import { CoverMovieCard2 } from "#components/Cards/MovieCards";
 import SklCoverMovieCard from "#components/Cards/Skeletons/SklCoverMovieCard";
 import { BreadcrumbStructuredData, SEOMeta } from "#components/SEO";
+import { MediaPagination } from "#components/MediaShell";
 import {
   useFetchNowPlayingMovies,
   useFetchPopularMovies,
@@ -85,6 +86,7 @@ const categoryDescriptions: Record<CategoryId, string> = {
 const MoviesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeCategory = resolveCategory(searchParams.get("category"));
+  const page = Math.max(1, Number(searchParams.get("page")) || 1);
 
   const selectedCategory = useMemo(
     () =>
@@ -93,9 +95,16 @@ const MoviesPage = () => {
     [activeCategory],
   );
 
-  const { data: moviesData, isLoading } = selectedCategory.useFetch();
+  const { data: moviesData, isLoading } = selectedCategory.useFetch({ page });
 
-  const { results: movies } = moviesData || {};
+  const { results: movies, total_pages } = moviesData || {};
+
+  const goToPage = (next: number) => {
+    const params: Record<string, string> = { category: activeCategory };
+    if (next > 1) params.page = String(next);
+    setSearchParams(params);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const breadcrumbs = [
     { name: "Home", url: "/" },
@@ -162,6 +171,14 @@ const MoviesPage = () => {
               </div>
             )}
           </div>
+
+          {total_pages && total_pages > 1 && (
+            <MediaPagination
+              page={page}
+              pageCount={total_pages}
+              onPageChange={goToPage}
+            />
+          )}
         </div>
       </div>
     </>

@@ -11,6 +11,7 @@ import {
   PersonType,
   ResponseType,
   ReviewType,
+  SearchResultType,
   SeasonType,
   TVSeriesListType,
   TVSeriesType,
@@ -33,63 +34,63 @@ export const useFetchTVGenres = () =>
 // All lists
 export const useFetchTrendingTodayMovies = (params?: object) =>
   useQuery<ResponseType<MovieListType>>({
-    queryKey: [queries.fetch_trending_movies],
+    queryKey: [queries.fetch_trending_movies, params],
     queryFn: () => requests.get("/3/trending/movie/day", { ...params }),
   });
 export const useFetchTrendingThisWeekMovies = (params?: object) =>
   useQuery<ResponseType<MovieListType>>({
-    queryKey: [queries.fetch_trending_movies],
+    queryKey: [queries.fetch_trending_movies, params],
     queryFn: () => requests.get("/3/trending/movie/week", { ...params }),
   });
 export const useFetchNowPlayingMovies = (params?: object) =>
   useQuery<ResponseType<MovieListType>>({
-    queryKey: [queries.fetch_now_playing],
+    queryKey: [queries.fetch_now_playing, params],
     queryFn: () => requests.get("/3/movie/now_playing", { ...params }),
   });
 export const useFetchPopularMovies = (params?: object) =>
   useQuery<ResponseType<MovieListType>>({
-    queryKey: [queries.fetch_popular_movies],
+    queryKey: [queries.fetch_popular_movies, params],
     queryFn: () => requests.get("/3/movie/popular", { ...params }),
   });
 export const useFetchTopRatedMovies = (params?: object) =>
   useQuery<ResponseType<MovieListType>>({
-    queryKey: [queries.fetch_top_rated_movies],
+    queryKey: [queries.fetch_top_rated_movies, params],
     queryFn: () => requests.get("/3/movie/top_rated", { ...params }),
   });
 export const useFetchUpcomingMovies = (params?: object) =>
   useQuery<ResponseType<MovieListType>>({
-    queryKey: [queries.fetch_upcoming_movies],
+    queryKey: [queries.fetch_upcoming_movies, params],
     queryFn: () => requests.get("/3/movie/upcoming", { ...params }),
   });
 
 export const useFetchTrendingTodayTVSeries = (params?: object) =>
   useQuery<ResponseType<TVSeriesListType>>({
-    queryKey: [queries.fetch_trending_tvseries],
+    queryKey: [queries.fetch_trending_tvseries, params],
     queryFn: () => requests.get("/3/trending/tv/day", { ...params }),
   });
 export const useFetchTrendingThisWeekTVSeries = (params?: object) =>
   useQuery<ResponseType<TVSeriesListType>>({
-    queryKey: [queries.fetch_trending_tvseries],
+    queryKey: [queries.fetch_trending_tvseries, params],
     queryFn: () => requests.get("/3/trending/tv/week", { ...params }),
   });
 export const useFetchAiringTodayTVSeries = (params?: object) =>
   useQuery<ResponseType<TVSeriesListType>>({
-    queryKey: [queries.fetch_airing_today_tvseries],
+    queryKey: [queries.fetch_airing_today_tvseries, params],
     queryFn: () => requests.get("/3/tv/airing_today", { ...params }),
   });
 export const useFetchAiringThisWeekTVSeries = (params?: object) =>
   useQuery<ResponseType<TVSeriesListType>>({
-    queryKey: [queries.fetch_on_the_air_tvseries],
+    queryKey: [queries.fetch_on_the_air_tvseries, params],
     queryFn: () => requests.get("/3/tv/on_the_air", { ...params }),
   });
 export const useFetchPopularTVSeries = (params?: object) =>
   useQuery<ResponseType<TVSeriesListType>>({
-    queryKey: [queries.fetch_popular_tvseries],
+    queryKey: [queries.fetch_popular_tvseries, params],
     queryFn: () => requests.get("/3/tv/popular", { ...params }),
   });
 export const useFetchTopRatedTVSeries = (params?: object) =>
   useQuery<ResponseType<TVSeriesListType>>({
-    queryKey: [queries.fetch_top_rated_tvseries],
+    queryKey: [queries.fetch_top_rated_tvseries, params],
     queryFn: () => requests.get("/3/tv/top_rated", { ...params }),
   });
 
@@ -186,20 +187,38 @@ export const useFetchEpisode = ({
   });
 
 //Search Item
-export const useSearchMulti = ({ query = "" }: { query?: string }) =>
-  useQuery<ResponseType<any>>({
-    queryKey: [queries.search_multi, query],
-    queryFn: () => requests.get(`/3/search/multi`, { query }),
+export const useSearchMulti = ({
+  query = "",
+  page = 1,
+}: {
+  query?: string;
+  page?: number;
+}) =>
+  useQuery<ResponseType<SearchResultType>>({
+    queryKey: [queries.search_multi, query, page],
+    queryFn: () => requests.get(`/3/search/multi`, { query, page }),
   });
-export const useSearchMovie = ({ query = "" }: { query?: string }) =>
+export const useSearchMovie = ({
+  query = "",
+  page = 1,
+}: {
+  query?: string;
+  page?: number;
+}) =>
   useQuery<ResponseType<MovieListType>>({
-    queryKey: [queries.search_movie, query],
-    queryFn: () => requests.get(`/3/search/movie`, { query }),
+    queryKey: [queries.search_movie, query, page],
+    queryFn: () => requests.get(`/3/search/movie`, { query, page }),
   });
-export const useSearchTVSeries = ({ query = "" }: { query?: string }) =>
+export const useSearchTVSeries = ({
+  query = "",
+  page = 1,
+}: {
+  query?: string;
+  page?: number;
+}) =>
   useQuery<ResponseType<TVSeriesListType>>({
-    queryKey: [queries.search_tv_series, query],
-    queryFn: () => requests.get(`/3/search/tv`, { query }),
+    queryKey: [queries.search_tv_series, query, page],
+    queryFn: () => requests.get(`/3/search/tv`, { query, page }),
   });
 export const useFetchMoviesByFilter = (
   params: { with_genres?: string; [key: string]: string | undefined }, //{ with_genres : numbers seperated by comma }
@@ -242,6 +261,6 @@ export const useFetchPersonTVCredits = ({ id }: { id?: number }) =>
 
 export const useFetchPopularPeople = (params?: object) =>
   useQuery<ResponseType<PersonListType>>({
-    queryKey: [queries.fetch_popular_people],
+    queryKey: [queries.fetch_popular_people, params],
     queryFn: () => requests.get("/3/person/popular", { ...params }),
   });

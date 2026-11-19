@@ -13,11 +13,6 @@ import {
 } from "#lib/api";
 
 const Homepage = () => {
-  // const { setSearchText } = useContext(DataContext);
-  // useEffect(() => {
-  //   setSearchText("");
-  // }, []);
-
   return (
     <>
       <SEOMeta

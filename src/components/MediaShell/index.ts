@@ -8,4 +8,5 @@ export { default as CastSection } from "./CastSection";
 export { default as ReviewsSection } from "./ReviewsSection";
 export { default as MediaSection } from "./MediaSection";
 export { default as FactsPanel } from "./FactsPanel";
+export { default as MediaPagination } from "./MediaPagination";
 export { imageUrl, IMAGE_BASE_URL } from "./imageUrl";
