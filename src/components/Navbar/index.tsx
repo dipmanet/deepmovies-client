@@ -14,6 +14,7 @@ const Navbar = ({ className = "" }: { className?: string }) => {
   const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showHeader, setShowHeader] = useState(true);
+  const [touchDevice, setTouchDevice] = useState(false);
 
   const pagePath = pathname.split("/")[1];
   const onHome = pathname === "/";
@@ -37,6 +38,13 @@ const Navbar = ({ className = "" }: { className?: string }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [onHome]);
 
+  useEffect(() => {
+    const checkTouch = () => {
+      setTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0);
+    };
+    checkTouch();
+  }, []);
+
   // Close mobile menu when route changes
   useEffect(() => {
     setMobileOpen(false);
@@ -53,8 +61,11 @@ const Navbar = ({ className = "" }: { className?: string }) => {
     };
   }, [mobileOpen]);
 
-  const isActive = (link: string) =>
-    pagePath === link.split("/")[1];
+  const isActive = (link: string) => pagePath === link.split("/")[1];
+
+  const toggleDropdown = (id: number) => {
+    setOpenDropdown((prev) => (prev === id ? null : id));
+  };
 
   const NavItem = ({ nav }: { nav: NavDataItem }) => {
     if (!nav?.children) {
@@ -76,16 +87,12 @@ const Navbar = ({ className = "" }: { className?: string }) => {
     }
 
     return (
-      <li
-        className="relative"
-        onMouseEnter={() => setOpenDropdown(nav.id)}
-        onMouseLeave={() => setOpenDropdown(null)}
-      >
+      <li className="relative">
         <button
           type="button"
-          onClick={() =>
-            setOpenDropdown((prev) => (prev === nav.id ? null : nav.id))
-          }
+          onClick={() => toggleDropdown(nav.id)}
+          onMouseEnter={() => !touchDevice && setOpenDropdown(nav.id)}
+          onMouseLeave={() => !touchDevice && setOpenDropdown(null)}
           className={cn(
             "flex items-center gap-1 rounded-md px-3 py-2 text-[13px] font-medium transition-colors",
             isActive(nav.link)
@@ -129,10 +136,10 @@ const Navbar = ({ className = "" }: { className?: string }) => {
   return (
     <div
       className={cn(
-        "w-full bg-card shadow-lg shadow-black/10 transition duration-500",
+        "absolute top-0 w-full bg-card shadow-lg shadow-black/10 transition duration-500",
         showHeader
           ? "sticky top-0 z-[50] translate-y-0 opacity-100"
-          : "pointer-events-none h-0 -translate-y-[100%] overflow-hidden opacity-0",
+          : "pointer-events-none -translate-y-[100%] opacity-0",
         className,
       )}
     >
@@ -160,13 +167,6 @@ const Navbar = ({ className = "" }: { className?: string }) => {
 
           {/* Actions */}
           <div className="flex items-center gap-2">
-            <a
-              href="/login"
-              className={cn(buttonVariants({ variant: "simple", size: "sm" }))}
-            >
-              <p>Sign in</p>
-            </a>
-
             {/* Mobile menu toggle */}
             <button
               type="button"
@@ -200,12 +200,12 @@ const Navbar = ({ className = "" }: { className?: string }) => {
         {/* Panel */}
         <div
           className={cn(
-            "absolute right-0 top-0 flex h-full w-[85%] max-w-sm flex-col bg-card shadow-2xl shadow-black/40 transition-transform duration-300 ease-out",
+            "absolute right-0 top-0 h-full w-[85%] max-w-sm flex-col bg-card shadow-2xl shadow-black/40 transition-transform duration-300 ease-out overflow-y-auto",
             mobileOpen ? "translate-x-0" : "translate-x-full",
           )}
         >
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-4">
+          <div className="flex items-center justify-between border-b border-white/[0.06] px-5 py-4 flex-shrink-0">
             <Link
               to="/"
               onClick={() => setMobileOpen(false)}
@@ -227,7 +227,7 @@ const Navbar = ({ className = "" }: { className?: string }) => {
           </div>
 
           {/* Search */}
-          <div className="px-5 py-4">
+          <div className="px-5 py-4 flex-shrink-0">
             <SearchInput />
           </div>
 
@@ -254,13 +254,12 @@ const Navbar = ({ className = "" }: { className?: string }) => {
                       </Link>
                       <button
                         type="button"
-                        onClick={() =>
-                          setOpenDropdown((prev) =>
-                            prev === nav.id ? null : nav.id,
-                          )
-                        }
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleDropdown(nav.id);
+                        }}
                         aria-label={`Expand ${nav.title}`}
-                        className="ml-2 text-muted-foreground hover:text-primary"
+                        className="ml-2 text-muted-foreground hover:text-primary flex-shrink-0"
                       >
                         <svg
                           viewBox="0 0 20 20"
