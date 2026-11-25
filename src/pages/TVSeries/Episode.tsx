@@ -160,6 +160,7 @@ const EpisodePage = () => {
         isOpen={isPlayerOpen}
         onClose={closePlayer}
         src={playerSrc}
+        fallbackSrc={`https://vidsrc.net/embed/tv?tmdb=${seriesId}&season=${Episode.season_number}&episode=${Episode.episode_number}`}
         title={Episode.name}
       />
 

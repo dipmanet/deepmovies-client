@@ -86,7 +86,7 @@ const categoryDescriptions: Record<CategoryId, string> = {
 const MoviesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeCategory = resolveCategory(searchParams.get("category"));
-  const page = Math.max(1, Number(searchParams.get("page")) || 1);
+  const page = Math.min(500, Math.max(1, Number(searchParams.get("page")) || 1));
 
   const selectedCategory = useMemo(
     () =>

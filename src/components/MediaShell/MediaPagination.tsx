@@ -14,10 +14,12 @@ const MediaPagination = ({
 }) => {
   if (pageCount <= 1) return null;
 
+  // TMDB caps results at 500 pages; clamp to avoid 400 errors
+  const total = Math.min(pageCount, 500);
+  const current = Math.min(page, total);
+
   // Build a window of page numbers around the current page
   const pages: (number | "ellipsis")[] = [];
-  const total = pageCount;
-  const current = page;
 
   const add = (n: number) => pages.push(n);
   const ellipsis = () => pages.push("ellipsis");
@@ -84,12 +86,12 @@ const MediaPagination = ({
 
       <button
         type="button"
-        disabled={current >= pageCount}
+        disabled={current >= total}
         onClick={() => onPageChange(current + 1)}
         className={cn(
           btn,
           idle,
-          current >= pageCount ? "pointer-events-none opacity-30" : "",
+          current >= total ? "pointer-events-none opacity-30" : "",
         )}
         aria-label="Next page"
       >

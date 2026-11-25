@@ -366,6 +366,7 @@ const TVSeriesPage = () => {
         isOpen={isPlayerOpen}
         onClose={closePlayer}
         src={playerSrc}
+        fallbackSrc={`${import.meta.env.VITE_VIDEO_URL}/tv/${seriesId}/1/1/`}
         title={TVSeries?.name ?? "series"}
       />
 

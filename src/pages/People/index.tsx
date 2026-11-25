@@ -23,7 +23,7 @@ const PeoplePage = () => {
   const raw = searchParams.get("department");
   const department: Dept =
     raw && DEPARTMENTS.some((d) => d.id === raw) ? (raw as Dept) : "all";
-  const page = Math.max(1, Number(searchParams.get("page")) || 1);
+  const page = Math.min(500, Math.max(1, Number(searchParams.get("page")) || 1));
 
   const { data, isLoading } = useFetchPopularPeople({
     page,

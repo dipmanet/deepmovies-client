@@ -31,7 +31,7 @@ const SearchResultsPage = () => {
   const navigate = useNavigate();
 
   const searchText = searchParams?.get("query") ?? "";
-  const page = Math.max(1, Number(searchParams?.get("page")) || 1);
+  const page = Math.min(500, Math.max(1, Number(searchParams?.get("page")) || 1));
   const [input, setInput] = useState(searchText);
   const [filter, setFilter] = useState<Filter>("all");
 
