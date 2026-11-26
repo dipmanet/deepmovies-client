@@ -133,58 +133,61 @@ const Navbar = ({ className = "" }: { className?: string }) => {
     );
   };
 
+  console.log("test nav", showHeader, mobileOpen);
+
   return (
-    <div
-      className={cn(
-        "absolute top-0 w-full bg-card shadow-lg shadow-black/10 transition duration-500",
-        showHeader
-          ? "sticky top-0 z-[50] translate-y-0 opacity-100"
-          : "pointer-events-none -translate-y-[100%] opacity-0",
-        className,
-      )}
-    >
-      <div className="container py-3.5">
-        <div className="flex w-full items-center gap-6 justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex shrink-0 items-center gap-2">
-            <RiVideoOnAiFill className="h-8 w-8 text-primary" />
-            <p className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-primary">
-              DeepMovies
-            </p>
-          </Link>
+    <>
+      <div
+        className={cn(
+          "absolute top-0 w-full bg-card shadow-lg shadow-black/10 transition duration-500",
+          showHeader
+            ? "sticky top-0 z-[50] translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-[100%] opacity-0",
+          className,
+        )}
+      >
+        <div className="container py-3.5">
+          <div className="flex w-full items-center gap-6 justify-between">
+            {/* Logo */}
+            <Link to="/" className="flex shrink-0 items-center gap-2">
+              <RiVideoOnAiFill className="h-8 w-8 text-primary" />
+              <p className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-500 via-purple-500 to-primary">
+                DeepMovies
+              </p>
+            </Link>
 
-          {/* Search (desktop) */}
-          <div className="hidden w-full max-w-sm flex-1 md:flex">
-            <SearchInput />
-          </div>
+            {/* Search (desktop) */}
+            <div className="hidden w-full max-w-sm flex-1 md:flex">
+              <SearchInput />
+            </div>
 
-          {/* Desktop nav */}
-          <ul className="hidden items-center gap-1 lg:flex">
-            {navData.map((nav) => (
-              <NavItem key={nav.id} nav={nav} />
-            ))}
-          </ul>
+            {/* Desktop nav */}
+            <ul className="hidden items-center gap-1 lg:flex">
+              {navData.map((nav) => (
+                <NavItem key={nav.id} nav={nav} />
+              ))}
+            </ul>
 
-          {/* Actions */}
-          <div className="flex items-center gap-2">
-            {/* Mobile menu toggle */}
-            <button
-              type="button"
-              onClick={() => setMobileOpen(true)}
-              aria-label="Open menu"
-              className="flex size-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:bg-white/[0.06] hover:text-primary lg:hidden"
-            >
-              <HiOutlineBars3 className="size-6" />
-            </button>
+            {/* Actions */}
+            <div className="flex items-center gap-2">
+              {/* Mobile menu toggle */}
+              <button
+                type="button"
+                onClick={() => setMobileOpen(true)}
+                aria-label="Open menu"
+                className="flex size-9 items-center justify-center rounded-lg text-accent-foreground transition-colors hover:bg-white/[0.06] hover:text-primary lg:hidden"
+              >
+                <HiOutlineBars3 className="size-6" />
+              </button>
+            </div>
           </div>
         </div>
       </div>
-
       {/* Mobile drawer */}
       <div
         className={cn(
           "fixed inset-0 z-[100] lg:hidden",
-          mobileOpen ? "pointer-events-auto" : "pointer-events-none",
+          mobileOpen ? "pointer-events-auto h-screen" : "pointer-events-none",
         )}
         aria-hidden={!mobileOpen}
       >
@@ -316,7 +319,7 @@ const Navbar = ({ className = "" }: { className?: string }) => {
           </nav>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

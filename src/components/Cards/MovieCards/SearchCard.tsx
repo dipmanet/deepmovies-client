@@ -34,7 +34,7 @@ const MediaBadge = ({ mediaType }: { mediaType: string }) => {
   }
   return (
     <span className="rounded-full bg-white/20 px-2.5 py-1 text-[11px] uppercase tracking-wide text-white backdrop-blur-sm">
-      {mediaType === "tv" ? "TV Series" : "Movie"}
+      {mediaType === "tv" ? "Series" : "Movie"}
     </span>
   );
 };

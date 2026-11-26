@@ -76,17 +76,25 @@ const categoryTitles: Record<CategoryId, string> = {
 };
 
 const categoryDescriptions: Record<CategoryId, string> = {
-  trending: "Discover the movies trending today. The films everyone is talking about right now.",
-  popular: "Discover the most popular movies right now. Trending films everyone is talking about.",
-  "top-rated": "Explore the highest-rated movies of all time. Critically acclaimed films you must watch.",
-  upcoming: "Check out upcoming movies and future releases. Plan your watchlist in advance.",
-  "now-playing": "See what movies are currently playing in theaters. Don't miss the latest releases.",
+  trending:
+    "Discover the movies trending today. The films everyone is talking about right now.",
+  popular:
+    "Discover the most popular movies right now. Trending films everyone is talking about.",
+  "top-rated":
+    "Explore the highest-rated movies of all time. Critically acclaimed films you must watch.",
+  upcoming:
+    "Check out upcoming movies and future releases. Plan your watchlist in advance.",
+  "now-playing":
+    "See what movies are currently playing in theaters. Don't miss the latest releases.",
 };
 
 const MoviesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeCategory = resolveCategory(searchParams.get("category"));
-  const page = Math.min(500, Math.max(1, Number(searchParams.get("page")) || 1));
+  const page = Math.min(
+    500,
+    Math.max(1, Number(searchParams.get("page")) || 1),
+  );
 
   const selectedCategory = useMemo(
     () =>
@@ -154,7 +162,7 @@ const MoviesPage = () => {
             </div>
           </div>
 
-          <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+          <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
             {isLoading ? (
               Array(10)
                 .fill("")

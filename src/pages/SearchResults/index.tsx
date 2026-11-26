@@ -31,7 +31,10 @@ const SearchResultsPage = () => {
   const navigate = useNavigate();
 
   const searchText = searchParams?.get("query") ?? "";
-  const page = Math.min(500, Math.max(1, Number(searchParams?.get("page")) || 1));
+  const page = Math.min(
+    500,
+    Math.max(1, Number(searchParams?.get("page")) || 1),
+  );
   const [input, setInput] = useState(searchText);
   const [filter, setFilter] = useState<Filter>("all");
 
@@ -173,7 +176,9 @@ const SearchResultsPage = () => {
                       filter === f.id
                         ? "bg-primary text-white shadow-sm"
                         : "text-muted-foreground hover:text-foreground hover:bg-white/[0.06]",
-                      disabled ? "opacity-40 cursor-not-allowed hover:bg-transparent" : "",
+                      disabled
+                        ? "opacity-40 cursor-not-allowed hover:bg-transparent"
+                        : "",
                     )}
                   >
                     <Icon className="text-[13px]" />
@@ -197,7 +202,7 @@ const SearchResultsPage = () => {
           )}
 
           {/* ============================ RESULTS ============================ */}
-          <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+          <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
             {isLoading && searchText ? (
               Array.from({ length: 10 }).map((_, i) => (
                 <SklCoverMovieCard key={i} />

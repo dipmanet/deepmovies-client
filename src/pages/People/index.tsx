@@ -23,7 +23,10 @@ const PeoplePage = () => {
   const raw = searchParams.get("department");
   const department: Dept =
     raw && DEPARTMENTS.some((d) => d.id === raw) ? (raw as Dept) : "all";
-  const page = Math.min(500, Math.max(1, Number(searchParams.get("page")) || 1));
+  const page = Math.min(
+    500,
+    Math.max(1, Number(searchParams.get("page")) || 1),
+  );
 
   const { data, isLoading } = useFetchPopularPeople({
     page,
@@ -101,7 +104,7 @@ const PeoplePage = () => {
             </div>
           </div>
 
-          <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+          <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
             {isLoading ? (
               Array.from({ length: 10 }).map((_, i) => (
                 <SklCoverMovieCard key={i} />

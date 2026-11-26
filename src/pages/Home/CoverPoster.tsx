@@ -70,7 +70,7 @@ const CoverPoster = () => {
                     </div>
                   </div>
                   <div className="">
-                    <p className="w-full text-accent-foreground text-[70px] lg:text-[85px] xl:text-[100px] font-heading leading-[80%]">
+                    <p className="w-full text-accent-foreground text-[50px] lg:text-[85px] xl:text-[100px] font-heading leading-[80%]">
                       {original_title}
                     </p>
                     <p className=" sm:w-2/3">{overview ?? ""}</p>

@@ -95,7 +95,7 @@ const CoverCategory = ({
 
         <div className="flex items-center gap-3">
           {(useGetMovies !== null || useGetTVSeries !== null) && (
-            <div className="flex items-center gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/[0.06]">
+            <div className="flex flex-col sm:flex-row items-center gap-1 p-1 rounded-lg bg-white/[0.04] border border-white/[0.06]">
               {ContentTypes.map((tab) => {
                 if (
                   (tab.id === 1 && useGetMovies === null) ||
@@ -132,7 +132,7 @@ const CoverCategory = ({
         </div>
       </div>
 
-      <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+      <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
         {!isLoadingM && !isLoadingS
           ? items
               ?.slice(0, 10)

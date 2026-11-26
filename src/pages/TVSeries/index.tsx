@@ -76,17 +76,25 @@ const categoryTitles: Record<CategoryId, string> = {
 };
 
 const categoryDescriptions: Record<CategoryId, string> = {
-  trending: "Discover the TV series trending today. The shows everyone is talking about right now.",
-  popular: "Discover the most popular TV series right now. Trending shows everyone is watching.",
-  "top-rated": "Explore the highest-rated TV series of all time. Critically acclaimed shows you must watch.",
-  "airing-today": "See what TV series are airing new episodes today. Stay up to date with your favorite shows.",
-  "airing-this-week": "Check out TV series airing new episodes this week. Never miss an episode.",
+  trending:
+    "Discover the TV series trending today. The shows everyone is talking about right now.",
+  popular:
+    "Discover the most popular TV series right now. Trending shows everyone is watching.",
+  "top-rated":
+    "Explore the highest-rated TV series of all time. Critically acclaimed shows you must watch.",
+  "airing-today":
+    "See what TV series are airing new episodes today. Stay up to date with your favorite shows.",
+  "airing-this-week":
+    "Check out TV series airing new episodes this week. Never miss an episode.",
 };
 
 const TVSeriesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeCategory = resolveCategory(searchParams.get("category"));
-  const page = Math.min(500, Math.max(1, Number(searchParams.get("page")) || 1));
+  const page = Math.min(
+    500,
+    Math.max(1, Number(searchParams.get("page")) || 1),
+  );
 
   const selectedCategory = useMemo(
     () =>
@@ -154,14 +162,18 @@ const TVSeriesPage = () => {
             </div>
           </div>
 
-          <div className="w-full grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
+          <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
             {isLoading ? (
               Array(10)
                 .fill("")
                 .map((_, idx) => <SklCoverMovieCard key={idx} />)
             ) : tvSeries && tvSeries.length > 0 ? (
               tvSeries.map((series: TVSeriesListType) => (
-                <CoverTVSeriesCard key={series.id} series={series} showDetails />
+                <CoverTVSeriesCard
+                  key={series.id}
+                  series={series}
+                  showDetails
+                />
               ))
             ) : (
               <div className="col-span-full flex items-center justify-center py-20">

@@ -57,7 +57,7 @@ const PersonCard = ({
               </div>
             </div>
           </>
-        )}
+        })
       </div>
     </Link>
   );
