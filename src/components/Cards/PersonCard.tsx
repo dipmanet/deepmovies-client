@@ -28,7 +28,10 @@ const PersonCard = ({
   return (
     <Link
       to={`/people/${id}`}
-      className={cn("group relative block min-w-[50px] rounded-xl", className ?? "")}
+      className={cn(
+        "group relative block min-w-[50px] rounded-xl",
+        className ?? "",
+      )}
     >
       <div className="relative aspect-[2/3] w-full overflow-hidden rounded-xl bg-white/[0.03] ring-1 ring-white/[0.06]">
         {image ? (
@@ -57,7 +60,7 @@ const PersonCard = ({
               </div>
             </div>
           </>
-        })
+        )}
       </div>
     </Link>
   );
